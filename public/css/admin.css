@@ -1,0 +1,52 @@
+main .registerUser form .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 15px;
+}
+main .registerUser form .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+main .registerUser form .row .form-group {
+    flex-basis: 32%;
+}
+main .registerUser form .is-minor {
+    display: flex;
+    gap: 10px;
+    justify-items: center;
+    margin: 10px 0;
+}
+main .registerUser form .is-minor input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+}
+main .registerUser form p {
+    font-size: 1.2rem;
+}
+main .registerUser form .button-group {
+    display: flex;
+    justify-content: space-between;
+}
+main .registerUser form .button-group .btnColor {
+    background-color: #0078d7;
+    margin-top: 0.7rem;
+    padding: 0.4rem 1.4rem;
+    color: #fff;
+}
+main .registerUser form .button-group .btnColor:hover {
+    opacity: 0.9;
+}
+main .registerUser form .button-group .btnSubmit {
+    margin-top: 0.7rem;
+    font-size: 1.2rem;
+    padding: 0.4rem 1.4rem;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--aside-bg);
+}
+main .registerUser form .button-group .btnSubmit:hover {
+    opacity: 0.9;
+}

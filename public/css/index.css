@@ -1,0 +1,331 @@
+:root{
+    --aside-bg: #7CCC64;
+    /* --body-bg: #D7F0D0; */
+    /* --body-bg: #F5F5F5; */
+    /* --main-bg: #FEFEFA; */
+    /* --main-bg: #F7F9E9; */
+    --sec-color: #F0D462;
+
+    --body-bg: #ced4da;
+    --main-bg: #fff;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+
+}
+form .text-danger{
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+ul{
+    list-style: none;
+}
+li{
+    text-decoration: none;
+}
+
+::-webkit-scrollbar{
+    width: 8px;
+}
+::-webkit-scrollbar-track{
+    background-color: #cecece;
+    border-radius: 20px;
+
+}
+::-webkit-scrollbar-thumb{
+    background-color: var(--aside-bg);
+    border-radius: 20px;
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+.col-md-6{
+    flex: 0 0 auto;
+    width: 50%;
+}
+.form-control{
+    display: block;
+    width: 100%;
+    padding: .359rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    outline-color: #7CCC64;
+    background-color: #edeff1;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+/* header css starts */
+
+header {
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    top: 0;
+    background-color: var(--body-bg);
+    display: flex;
+}
+header .logoSection {
+    width: 20%;
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: var(--aside-bg);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+header .logoSection img {
+    object-fit: contain;
+}
+header .logoSection .menuToggle {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    float: right;
+    z-index: 1;
+}
+header .logoSection .menuToggle span {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    left: 50%;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    transition: 0.3s;
+}
+header .logoSection .menuToggle .line-1 {
+    transform: translate(-50%, -10px);
+}
+header .logoSection .menuToggle .line-3 {
+    transform: translate(-50%, 7px);
+}
+header .searchSetting {
+    width: 77%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+header .searchSetting .searchBar {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+header .searchSetting .searchBar img {
+    position: absolute;
+    left: 10px;
+}
+header .searchSetting .searchBar input {
+    width: 100%;
+    padding: 0.7rem 3rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    border: none;
+    outline-color: #fff;
+    background-color: #fff;
+    opacity: 0.9;
+}
+header .searchSetting .searchBar input:focus {
+    opacity: 1;
+}
+header .searchSetting .setting {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    cursor: pointer;
+}
+header .searchSetting .setting .headerProfile {
+    width: 35px;
+    height: 35px;
+}
+header .searchSetting .setting .headerProfile img {
+    padding: 2px;
+    background-color: var(--bs-gray-100);
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+@media screen and (max-width: 1000px) {
+    header {
+        background-color: var(--aside-bg);
+   }
+    header .logoSection {
+        width: 39%;
+   }
+}
+
+/* header css ends */
+
+/* aside css starts */
+/* Main aside container */
+aside {
+    width: 20%;
+    position: fixed;
+    top: 70px;
+    height: 89vh;
+    background-color: var(--aside-bg);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main menu */
+aside .menu {
+    margin: 1rem 0 0 1rem;
+}
+
+aside .menu a {
+    text-decoration: none;
+    color: #000;
+}
+
+aside .menu .nav-item {
+    padding: 10px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Main menu nav-link */
+aside .menu .nav-item .nav-link {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+/* Main menu text style */
+aside .menu .nav-item .nav-link span {
+    font-size: 1.2rem;
+    color: #000;
+    text-decoration: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* Hover effect for main menu */
+aside .menu .nav-item .nav-link:hover{
+    width: 93%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #ced4da;
+}
+
+/* Active state only for main menu items */
+aside .menu .nav-item .nav-link:active {
+    width: 93%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #ced4da;
+}
+
+/* Submenu styles */
+.nav-item .nav-link ul {
+    display: none;
+    padding-left: 2rem;
+    border-radius: 5px;
+    min-width: 200px;
+}
+
+/* Show submenu when the parent nav-item is active */
+.nav-item.active ul {
+    display: block;
+}
+
+/* Submenu items */
+.nav-item ul .nav-item {
+    position: relative;
+}
+
+/* Removing active effect from submenu items */
+.nav-item ul .nav-item.active {
+    background-color: transparent;
+    width: auto;
+}
+
+
+
+
+
+@media screen and (max-width: 1000px) {
+    aside {
+        width: 100%;
+   }
+}
+
+/* aside css ends */
+/* main css ends */
+
+main{
+    margin-left: 20%;
+    width: 80%;
+    height: 89vh;
+    position: fixed;
+    top: 70px;
+    background-color: var(--body-bg);
+    box-sizing: border-box;
+    padding: 20px;
+}
+main p{
+        margin: 0;
+        padding: 0;
+    }
+
+main .headingName{
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+main .container{
+        min-width: 100%;
+        width: 100%;
+        height: 75vh;
+        background-color: var(--main-bg);
+        border-radius: 10px;
+        padding: 0.7rem;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        z-index: 1;
+        overflow-y: auto;
+}
+/* main css ends */
+
+table{
+    width: 100%;
+    border-spacing: 0;
+}
+table thead{
+    display: table-header-group;
+    vertical-align: middle;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+table tr{
+    border-width: 0;
+    display: table-row;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+table tr th{
+    background-color: #fff;
+    padding: 10px;
+    display: table-cell;
+    vertical-align: inherit;
+    font-weight: bold;
+    text-align: -internal-center;
+    unicode-bidi: isolate;
+}
