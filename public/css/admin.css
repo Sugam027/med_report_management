@@ -1,12 +1,12 @@
 main .registerUser form .title {
     font-size: 1.2rem;
     font-weight: 600;
-    margin-top: 15px;
+    margin: 15px 0;
 }
 main .registerUser form .row {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px 15px;
     margin-bottom: 10px;
 }
 main .registerUser form .row .form-group {
@@ -25,20 +25,23 @@ main .registerUser form .is-minor input[type='checkbox'] {
 main .registerUser form p {
     font-size: 1.2rem;
 }
-main .registerUser form .button-group {
+main .registerUser form #doctor-details {
+    display: none;
+}
+main form .button-group {
     display: flex;
     justify-content: space-between;
 }
-main .registerUser form .button-group .btnColor {
+main form .button-group .btnColor {
     background-color: #0078d7;
     margin-top: 0.7rem;
     padding: 0.4rem 1.4rem;
     color: #fff;
 }
-main .registerUser form .button-group .btnColor:hover {
+main form .button-group .btnColor:hover {
     opacity: 0.9;
 }
-main .registerUser form .button-group .btnSubmit {
+main form .button-group .btnSubmit {
     margin-top: 0.7rem;
     font-size: 1.2rem;
     padding: 0.4rem 1.4rem;
@@ -47,6 +50,119 @@ main .registerUser form .button-group .btnSubmit {
     border-radius: 5px;
     background-color: var(--aside-bg);
 }
-main .registerUser form .button-group .btnSubmit:hover {
+main form .button-group .btnSubmit:hover {
     opacity: 0.9;
+}
+
+
+
+/* table{
+    width: 100%;
+    border-spacing: 0;
+}
+table thead{
+    display: table-header-group;
+    vertical-align: middle;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+table tr{
+    border-width: 0;
+    display: table-row;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+table tr th{
+    background-color: #fff;
+    padding: 10px;
+    display: table-cell;
+    vertical-align: inherit;
+    font-weight: bold;
+    text-align: -internal-center;
+    unicode-bidi: isolate;
+} */
+
+
+.tableContainer {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+    text-align: left;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+ 
+  
+  .table th, .table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+  }
+  
+  .table th {
+    font-weight: bold;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #f6f6f6;
+  }
+  
+  .btn {
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+    color: white;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+  }
+  
+  .me-2 {
+    margin-right: 10px;
+  }
+  
+  /* Responsive behavior */
+  @media screen and (max-width: 768px) {
+    .tableContainer {
+      padding: 0 10px;
+    }
+    
+    .table th, .table td {
+      padding: 10px;
+    }
+    
+    .btn {
+      padding: 5px 10px;
+    }
+  }
+  
+
+/* schedule pages starts */
+.titleHead{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main .titleHead .button-group{
+  background-color: var(--aside-bg);
+  border-radius: 5px;
 }

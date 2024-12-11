@@ -6,5 +6,4 @@
     <p class="headingName">Dashboard</p>
   </div>
 
-      
 </main>

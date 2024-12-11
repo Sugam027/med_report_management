@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/admin.css">
+
 </head>
 <body>
     
@@ -22,7 +23,7 @@
         <div class="searchSetting">
             <div class="searchBar">
                 <img src="../images/search.png" alt="">
-                <input type="text" class="form-control" placeholder="Search" />
+                <input type="search" class="form-control" placeholder="Search" />
             </div>
             <div class="setting">
                 <img src="../images/setting.png" alt="" >

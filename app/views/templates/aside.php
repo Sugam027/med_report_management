@@ -17,20 +17,25 @@
             <span>
               User
             </span>
+            <div class="arrow">
+              <span style="
+                  font-size: 1rem;
+              ">&#11167;</span>
+            </div>
           </a>
           <ul class="nav flex-column ml-3">
-            <li class="nav-item">
-              <a class="nav-link" href="/user/registeruser">
+            <li class="sub-item">
+              <a class="sub-nav-link" href="/user/registeruser">
                 Add User
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/user/viewpatient">
+            <li class="sub-item">
+              <a class="sub-nav-link" href="/user/viewpatient">
                 View Patient
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/user/viewdoctor">
+            <li class="sub-item">
+              <a class="sub-nav-link" href="/user/viewdoctor">
                 View Doctor
               </a>
             </li>
@@ -42,6 +47,15 @@
             <span>
               Schedule
             </span>
+          </a>
+        </li>
+        <li class="nav-item " >
+          <a class="nav-link" href="/appointment" >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20px" height="20px"><path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z"/></svg>
+            <span>
+              Appointment
+            </span>
+            
           </a>
         </li>
         <li class="nav-item " >
@@ -75,23 +89,31 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
   // Select all parent menu items
-  const navItems = document.querySelectorAll('.nav-link');
-
+  const navItems = document.querySelectorAll('.nav-item');
+  
+  // Get the current path
+  const currentPath = window.location.pathname;
+  
   navItems.forEach(item => {
+    const link = item.querySelector('a.nav-link');
+    
+    // Check if the clicked nav-item has a ul element (submenu)
+    const submenu = item.querySelector('ul');
+    
+    // Add event listener for the menu click to show/hide submenu
     item.addEventListener('click', function(e) {
-      // Check if the clicked nav-item has a ul element (submenu)
-      const submenu = item.querySelector('ul');
       if (submenu) {
         e.stopPropagation(); // Prevent click from propagating to parent elements
         
         // Toggle the 'active' class to show/hide submenu
-        item.classList.toggle('active');
+        item.classList.toggle('dropdown');
+        
         submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
-
+        
         // Close other open menus if needed
         navItems.forEach(nav => {
           if (nav !== item) {
-            nav.classList.remove('active');
+            // nav.classList.remove('active');
             const otherSubmenu = nav.querySelector('ul');
             if (otherSubmenu) {
               otherSubmenu.style.display = 'none';
@@ -100,17 +122,24 @@
         });
       }
     });
-  });
 
-  // Hide submenu when clicking outside of the menu
-  document.addEventListener('click', function() {
-    navItems.forEach(item => {
-      item.classList.remove('active');
-      const submenu = item.querySelector('ul');
-      if (submenu) {
-        submenu.style.display = 'none';
+    // Check for the current path for main nav links
+    if (link && link.getAttribute('href') === currentPath) {
+      item.classList.add('active');
+    }
+
+    // Check if any sub-item matches the current path
+    const subItems = item.querySelectorAll('.sub-item a');
+    subItems.forEach(subLink => {
+      if (subLink.getAttribute('href') === currentPath) {
+        subLink.classList.add('active'); // Mark sub-item as active
+        item.classList.add('active'); // Mark parent nav-item as active
+        item.classList.add('dropdown'); // Mark parent nav-item as active
+        submenu.style.display = 'block'; // Show the submenu when the sub-item is active
+        submenu.classList.add('active'); // Mark parent nav-item as active
       }
     });
   });
 });
+
 </script>

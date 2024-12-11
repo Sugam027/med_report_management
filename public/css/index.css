@@ -1,12 +1,13 @@
 :root{
-    --aside-bg: #7CCC64;
+    /* --aside-bg: #7CCC64; */
+    --aside-bg: #17b890;
     /* --body-bg: #D7F0D0; */
     /* --body-bg: #F5F5F5; */
     /* --main-bg: #FEFEFA; */
     /* --main-bg: #F7F9E9; */
     --sec-color: #F0D462;
-
-    --body-bg: #ced4da;
+    /* --body-bg: #ced4da; */
+    --body-bg: #bed5d0;
     --main-bg: #fff;
 }
 
@@ -26,6 +27,9 @@ ul{
     list-style: none;
 }
 li{
+    text-decoration: none;
+}
+a{
     text-decoration: none;
 }
 
@@ -61,9 +65,14 @@ li{
     background-color: #edeff1;
     border: 1px solid #dee2e6;
     border-radius: 0.375rem;
+    margin-top: 5px;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
-
+.d-flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 /* header css starts */
 
 header {
@@ -130,7 +139,7 @@ header .searchSetting .searchBar img {
 }
 header .searchSetting .searchBar input {
     width: 100%;
-    padding: 0.7rem 3rem;
+    padding: 0.7rem 0.6rem 0.7rem 3rem;
     font-size: 1.1rem;
     border-radius: 5px;
     border: none;
@@ -193,15 +202,15 @@ aside .menu a {
 }
 
 aside .menu .nav-item {
-    padding: 10px;
-    position: relative;
     box-sizing: border-box;
+    margin-bottom: 5px;
 }
 
 /* Main menu nav-link */
 aside .menu .nav-item .nav-link {
     display: flex;
     gap: 10px;
+    padding: 10px;
     align-items: center;
     transition: background-color 0.3s ease;
 }
@@ -209,33 +218,45 @@ aside .menu .nav-item .nav-link {
 /* Main menu text style */
 aside .menu .nav-item .nav-link span {
     font-size: 1.2rem;
+    /* color: #fff; */
     color: #000;
     text-decoration: none;
     padding: 0;
     cursor: pointer;
 }
 
-/* Hover effect for main menu */
-aside .menu .nav-item .nav-link:hover{
+
+
+aside .menu .nav-item .nav-link:hover,
+aside .menu .nav-item.active > .nav-link {
     width: 93%;
     padding: 10px;
     border-radius: 5px;
-    background-color: #ced4da;
+    background-color: #ced4da; 
 }
 
-/* Active state only for main menu items */
-aside .menu .nav-item .nav-link:active {
-    width: 93%;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #ced4da;
+/* aside .menu .nav-item .nav-link:hover span,
+aside .menu .nav-item.active > .nav-link span{
+    color: #000; 
+} */
+
+aside .menu .nav-item .nav-link .arrow{
+    margin-left: 6rem;
+    transition: transform 0.3s ease; 
 }
+
+.nav-item.dropdown .arrow {
+    transform: rotate(180deg);
+  }
+
+
+
+
 
 /* Submenu styles */
-.nav-item .nav-link ul {
+.nav-item ul {
     display: none;
-    padding-left: 2rem;
-    border-radius: 5px;
+    padding-left: 4rem;
     min-width: 200px;
 }
 
@@ -245,14 +266,20 @@ aside .menu .nav-item .nav-link:active {
 }
 
 /* Submenu items */
-.nav-item ul .nav-item {
+.nav-item ul .sub-item {
     position: relative;
+    margin-top: 10px;
+}
+.nav-item ul .sub-item .sub-nav-link {
+    color: #454545;
+}
+.nav-item ul .sub-item .sub-nav-link:hover {
+    color: #000;
 }
 
 /* Removing active effect from submenu items */
-.nav-item ul .nav-item.active {
-    background-color: transparent;
-    width: auto;
+.nav-item ul .sub-item .sub-nav-link.active {
+    color: #000;
 }
 
 
@@ -282,17 +309,18 @@ main p{
         margin: 0;
         padding: 0;
     }
-
+main .heading{
+    margin-bottom: 10px;
+}
 main .headingName{
     font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 10px;
 }
 
 main .container{
         min-width: 100%;
         width: 100%;
-        height: 75vh;
+        height: 80vh;
         background-color: var(--main-bg);
         border-radius: 10px;
         padding: 0.7rem;
@@ -303,29 +331,137 @@ main .container{
 }
 /* main css ends */
 
-table{
-    width: 100%;
-    border-spacing: 0;
+
+
+main .container .recordsMenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
-table thead{
-    display: table-header-group;
-    vertical-align: middle;
-    unicode-bidi: isolate;
-    border-color: inherit;
+main .container .recordsMenu span {
+    font-size: 1.5rem;
+    font-weight: 600;
 }
-table tr{
-    border-width: 0;
-    display: table-row;
-    vertical-align: inherit;
-    unicode-bidi: isolate;
-    border-color: inherit;
+main .container .recordsMenu ul {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
 }
-table tr th{
+main .container .recordsMenu ul li {
+    padding: 5px 10px;
     background-color: #fff;
-    padding: 10px;
-    display: table-cell;
-    vertical-align: inherit;
-    font-weight: bold;
-    text-align: -internal-center;
-    unicode-bidi: isolate;
+    border-radius: 10px;
+    cursor: pointer;
 }
+main .container .recordsMenu ul li.active {
+    background-color: var(--sec-color);
+}
+main .container .records {
+    background-color: #fff;
+    display: flex;
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 1px 5px 0px;
+}
+main .container .records .date {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--sec-color);
+    box-sizing: border-box;
+    text-align: center;
+}
+main .container .records .date .day {
+    padding: 13px;
+    padding-top: 0;
+    font-size: 13px;
+    font-weight: 800;
+}
+main .container .records .cardBody {
+    width: 90%;
+}
+main .container .records .cardBody .cardTitle {
+    width: 100%;
+    border-bottom: 1px solid #262525;
+}
+main .container .records .cardBody .cardTitle .hospitalName p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+main .container .records .cardBody .cardTitle .hospitalAddress p {
+    color: #717171;
+}
+main .container .records .cardBody .cardInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+main .container .records .cardBody .cardInfo h4 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--aside-bg);
+}
+main .container .records .cardBody .cardInfo .doctorDetail {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    flex-wrap: wrap;
+    cursor: pointer;
+}
+main .container .records .cardBody .cardInfo .doctorDetail .doctorImage {
+    width: 50px;
+    height: 50px;
+}
+main .container .records .cardBody .cardInfo .doctorDetail .doctorImage img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+main .container .records .cardBody .cardInfo .doctorDetail .doctorProfile .doctorName {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+main .container .records .cardBody .cardInfo .doctorDetail .doctorProfile .doctorEmail {
+    color: #717171;
+}
+main .container .records .cardBody .cardInfo .doctorCategory {
+    margin-top: 0.9rem;
+}
+main .container .records .cardBody .cardInfo .doctorCategory .doctorField {
+    color: #717171;
+}
+main .container .records .cardBody .cardInfo .examination .examinationTitle {
+    font-weight: 600;
+}
+main .container .records .cardBody .cardInfo .examination .examinationDetails {
+    color: #717171;
+}
+main .container .records .cardBody .cardInfo .prescription .prescriptionTitle {
+    font-weight: 600;
+}
+main .container .records .cardBody .cardInfo .prescription .prescriptionList .prescriptionItem {
+    color: #717171;
+}
+main .container .records .cardBody .cardInfo .prescription .prescriptionList .prescriptionItem span {
+    color: #000;
+    font-size: 18px;
+}
+main .container .records .cardBody .cardInfo .expandButton .expand {
+    padding: 0.4rem 1.2rem;
+    background-color: var(--sec-color);
+    border-radius: 0.7rem;
+    display: inline-block;
+    cursor: pointer;
+}
+main .container .records .cardBody .cardInfo .expandButton .expand:hover {
+    background-color: var(--aside-bg);
+}
+
+

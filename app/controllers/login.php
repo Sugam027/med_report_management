@@ -11,7 +11,7 @@ class login extends Controller {
         // Instantiate the DatabaseQuery class to run table creation
         $this->setup = new DatabaseQuery();
         $this->setup->createUsersTable();  // Automatically create the users table when the login page loads
-        $this->userModel = $this->model('User');
+        $this->userModel = $this->model('Users');
     }
 
     public function index() {

@@ -10,18 +10,32 @@ class Database {
     private $stmt;
 
     public function __construct() {
-        // Set DSN
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
+        // Connect to MySQL server without a specific database first
+        $dsn = 'mysql:host=' . $this->host;
         $options = array(
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         );
 
-        // Create a new PDO instance
+        // Try to connect to the server
         try {
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
+            // Create the database if it doesn't exist
+            $this->createDatabase();
+            // Reconnect with the specified database
+            $this->dbh->exec('USE ' . $this->dbname);
         } catch (PDOException $e) {
-            die("Database Connection failed: " . $e->getMessage());
+            die("Database connection failed: " . $e->getMessage());
+        }
+    }
+
+    // Function to create the database if it doesn't exist
+    private function createDatabase() {
+        try {
+            $sql = "CREATE DATABASE IF NOT EXISTS " . $this->dbname;
+            $this->dbh->exec($sql);
+        } catch (PDOException $e) {
+            die("Database creation failed: " . $e->getMessage());
         }
     }
 
@@ -35,7 +49,14 @@ class Database {
         $this->stmt = $this->dbh->prepare($sql);
     }
 
-    // Bind the values to the prepared statement
+    // Bind values to the prepared statement
+    public function bindValues($values) {
+        foreach ($values as $index => $value) {
+            $this->stmt->bindValue($index + 1, $value);
+        }
+    }
+
+    // Bind the values to the prepared statement with types
     public function bind($param, $value, $type = null) {
         if (is_null($type)) {
             switch (true) {
@@ -66,10 +87,35 @@ class Database {
         return $this->stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    // Get result set as object
-    public function resultSet()
-    {
+    // Fetch all records as an array of associative arrays
+    public function fetchAll() {
+        $this->execute();
+        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Fetch all records as an array of objects
+    public function resultSet() {
         $this->execute();
         return $this->stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    // Get the last inserted ID
+    public function lastInsertId() {
+        return $this->dbh->lastInsertId();
+    }
+
+     // Begin transaction
+     public function beginTransaction() {
+        return $this->dbh->beginTransaction();
+    }
+
+    // Commit the transaction
+    public function commit() {
+        return $this->dbh->commit();
+    }
+
+    // Rollback the transaction
+    public function rollBack() {
+        return $this->dbh->rollBack();
     }
 }
