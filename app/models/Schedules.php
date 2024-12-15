@@ -25,7 +25,7 @@ class Schedules{
             return false;
         }
     }
-
+    
     public function getScheduleWithShifts($todayDay) {
         $table = 'doctor_schedule s';
         $conditions = []; // No specific conditions for the table

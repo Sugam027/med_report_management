@@ -15,8 +15,7 @@
             <input
               type="date"
               class="form-control"
-              onChange={handleDobChange}
-              placeholder="dob"
+              name="date"
             />
           </div>
           <div class="form-group">
@@ -24,12 +23,12 @@
             <input
               type="text"
               value=""
+              name="time"
               class="form-control"
               placeholder="Appointment Time"
-              readOnly
+
             />
           </div>
-          
         </div>
         <div class="row mb-2">
           <div class="form-group">
@@ -89,14 +88,13 @@
           <div class="form-group">
             <label>Consultant Doctor</label>
             <select
-              defaultValue=""
-              name="perDistrict"
+              name="doctor"
+              id=""
               class="form-control">
-              <option value="" disabled>
-                {" "}
-                -- Select District --
-              </option>
-              
+              <option value="undefined" disabled selected> --Select Doctor-- </option> 
+              <?php foreach($data['doctors'] as $doctor): ?>
+                <option name="doctor" value="<?= $doctor['user_id']; ?>"><?= $doctor['name']; ?></option>
+              <?php endforeach; ?>
             </select>
           </div>
            

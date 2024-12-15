@@ -1,0 +1,48 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore node_modules and vendor folders
+node_modules/
+vendor/
+
+# Ignore composer lock and phpmailer specific files
+composer.lock
+composer.json
+app/lib/phpmailer/vendor/
+app/lib/phpmailer/composer.json
+app/lib/phpmailer/composer.lock
+
+# Ignore IDE/editor configuration files
+*.idea/
+*.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore log files and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Ignore OS generated files
+*.orig
+*.class
+__pycache__/
+
+# Ignore compiled files
+*.out
+*.exe
+*.o
+*.so
+*.dll
+*.pdb
+
+# Ignore build artifacts
+/build/
+dist/
+
+# Ignore environment files
+.env
+.env.*

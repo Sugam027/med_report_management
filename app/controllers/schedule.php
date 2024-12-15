@@ -106,12 +106,7 @@ class schedule extends Controller{
         }
 
 
-        $doctors = $this->userModel->getDoctors();  // Get all doctors
-        $shifts = $this->shiftModel->getShift();  
-        $data = [
-            'doctors' => $doctors,
-            
-        ];
+        
         $this->view('schedule/manage_schedule', $data);
     }
 

@@ -52,6 +52,21 @@ class user extends Controller{
             if ($result) {
                 // Set success message
                 $data['success'] = 'User registered successfully.';
+
+                // Send email to the registered user
+                $mailer = new Mailer();
+                $plainPassword = trim($_POST['password']); // Get the original password before hashing
+                $mailData = [
+                    'name' => $userData['name'],
+                    'username' => $userData['username'],
+                    'password' => $plainPassword,
+                    'email' => $userData['email']
+                ];
+                if ($mailer->accountCreationMail($mailData)) {
+                    $data['success'] .= ' An email with login credentials has been sent.';
+                } else {
+                    $data['error'] = 'User registered, but the email could not be sent.';
+                }
             } else {
                 // Set error message
                 $data['error'] = 'Registration failed. Please try again.' ;
@@ -73,7 +88,7 @@ class user extends Controller{
      ];
  
      // Clear session messages after loading
-     unset($_SESSION['success'], $_SESSION['error']);
+     unset($data['success'], $data['error']);
     $this->view('user/registeruser', $data);
     }
 

@@ -123,7 +123,27 @@ class DatabaseQuery {
                     FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) 
                     ON DELETE CASCADE ON UPDATE NO ACTION
                 );
+            ",
+
+            'appointments' => "
+                CREATE TABLE IF NOT EXISTS appointments (
+                    `appointment_id` INT AUTO_INCREMENT PRIMARY KEY,
+                    `date` DATE NOT NULL,
+                    `time` TIME NOT NULL,
+                    `patient_id` BIGINT UNSIGNED,
+                    `patient_name` VARCHAR(25) NOT NULL,    
+                    `age` INT NOT NULL,
+                    `phone` VARCHAR(15) NOT NULL,
+                    `symptoms` TEXT,
+                    `department_name` INT,
+                    `doctor_id` BIGINT UNSIGNED,
+                    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    FOREIGN KEY (patient_id) REFERENCES users(`user_id`),
+                    FOREIGN KEY (doctor_id) REFERENCES users(`user_id`)
+                );
             "
+
         ];
 
         foreach ($sql as $table => $createQuery) {
