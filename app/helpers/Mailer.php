@@ -19,16 +19,18 @@ class Mailer
 
         try {
             // Server settings
+            
             $this->mail->isSMTP();
             $this->mail->Host = 'smtp.gmail.com';
             $this->mail->SMTPAuth = true;
-            $this->mail->Username = 'mailer.sugam@gmail.com'; // Your Gmail address
-            $this->mail->Password = 'rufy maav dlxp vrpu'; // Your Gmail password or app password
+            $this->mail->Username = 'shresthasugam1677@gmail.com'; // Gmail address
+            $this->mail->Password = 'orgx fygq yxty vctu'; // Use app password
             $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mail->Port = 587;
 
             // Sender info
-            $this->mail->setFrom('mailer.sugam@gmail.com', 'Medilog');
+            $this->mail->setFrom('shresthasugam1677@gmail.com', 'Medilog');
+            
         } catch (Exception $e) {
             echo "Mailer Error: " . $e->getMessage();
         }

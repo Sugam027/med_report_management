@@ -12,7 +12,7 @@
     <a href="/schedule/manage_schedule"><p class="btn">Manage Schedule</p></a>
     </div>
   </div>
-  <div class="container">
+  <!-- <div class="container"> -->
     <div class="tableContainer">
       <?php if (!empty($data['scheduleData'])): ?>
         <table class="table">
@@ -49,7 +49,8 @@
         <p>No schedule found.</p>
       <?php endif; ?>
     </div>
-  </div>
+  <!-- </div> -->
 
  
 </main>
+<?php require_once '../app/views/templates/footer.php'; ?>

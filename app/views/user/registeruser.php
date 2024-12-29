@@ -8,18 +8,6 @@
 
   <div class="registerUser">
     <div class="container">
-      <!-- Display success or error messages -->
-      <?php if (!empty($data['success'])): ?>
-        <div class="alert alert-success">
-          <?= htmlspecialchars($data['success']); ?>
-        </div>
-      <?php endif; ?>
-
-      <?php if (!empty($data['error'])): ?>
-        <div class="alert alert-danger">
-          <?= htmlspecialchars($data['error']); ?>
-        </div>
-      <?php endif; ?>
       <form id="register-form" action="" method="POST">
         <div class="row mb-2">
           <div class="form-group">
@@ -33,7 +21,7 @@
               name="role"
               id="role-select"
               class="form-control">
-              <option value="" disabled> --Select Role-- </option> 
+              <option value="" disabled selected> --Select Role-- </option> 
               <?php foreach($data['roles'] as $role): ?>
                 <option name="role" value="<?= $role->id; ?>"><?= $role->title; ?></option>
               <?php endforeach; ?>
@@ -92,7 +80,7 @@
               name="gender"
               defaultValue=""
               class="form-control">
-              <option value="" disabled>
+              <option value="" disabled selected>
                 --Select Gender--
               </option>
               <option value="male">Male</option>
@@ -122,7 +110,7 @@
               name="blood_group"
               defaultValue=""
               class="form-control">
-              <option value="" disabled>
+              <option value="" disabled selected>
                 --Select Blood Group--
               </option>
               <option value="unknown">Unknown</option>
@@ -157,19 +145,10 @@
           </div>
           
         </div>
-        <label class="is-minor">
-          </label>
-          <input
-            type="checkbox"
-            id="is-minor"
-            name="is_minor"
-          >
-          I am a minor
-        <!-- {isMinor ? (
-          <p class="title"> Parent's Contact details</p>
-        ) : ( -->
-          <p class="title">Contact details</p>
-        <!-- )} -->
+        
+          
+        
+        <p class="title">Contact details</p>
         <div class="row mb-2">
           <div class="form-group">
             <label>Email</label>
@@ -201,21 +180,13 @@
                 </a>
               </label>
               <select
-                name="department"
+                name="department_id"
                 defaultValue=""
                 class="form-control">
-                <option value="" disabled>
-                  --Select Blood Group--
-                </option>
-                <option value="unknown">Unknown</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
+                <option value="" disabled selected> --Select Department-- </option> 
+                <?php foreach($data['departments'] as $department): ?>
+                  <option name="department_id" value="<?= $department['id']; ?>"><?= $department['name']; ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
             <div class="form-group">
@@ -330,4 +301,4 @@
   </div>
 </main>
 
-<script src="../js/index.js"></script>
+<?php require_once '../app/views/templates/footer.php'; ?>

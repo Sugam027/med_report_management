@@ -8,35 +8,34 @@ class Sql extends Database
     }
     
     // Insert data into a table
-    public function insertData($table, $data)
-{
-    try {
-        $keys = implode(', ', array_keys($data));
-        $placeholders = implode(', ', array_fill(0, count($data), '?'));
+    public function insertData($table, $data){
+        try {
+            $keys = implode(', ', array_keys($data));
+            $placeholders = implode(', ', array_fill(0, count($data), '?'));
 
-        $sql = "INSERT INTO $table ($keys) VALUES ($placeholders)";
-        $this->query($sql);
-        $this->bindValues(array_values($data));
+            $sql = "INSERT INTO $table ($keys) VALUES ($placeholders)";
+            $this->query($sql);
+            $this->bindValues(array_values($data));
 
-        // Log the SQL and parameters for debugging
-        error_log("Executing SQL: $sql with values: " . json_encode(array_values($data)));
+            // Log the SQL and parameters for debugging
+            error_log("Executing SQL: $sql with values: " . json_encode(array_values($data)));
 
-        if ($this->execute()) {
-            return $this->lastInsertId();
-        } else {
-            error_log("SQL execution failed: $sql with values: " . json_encode(array_values($data)));
+            if ($this->execute()) {
+                return $this->lastInsertId();
+            } else {
+                error_log("SQL execution failed: $sql with values: " . json_encode(array_values($data)));
+                return false;
+            }
+        } catch (Exception $e) {
+            // Log the exception
+            error_log("Error in insertData: " . $e->getMessage());
             return false;
         }
-    } catch (Exception $e) {
-        // Log the exception
-        error_log("Error in insertData: " . $e->getMessage());
-        return false;
     }
-}
 
 
     // Get data from a table
-    public function getData($table, $conditions = [], $fields = '*', $joins = [])
+    public function getData($table, $conditions = [], $fields = '*', $joins = [], $groupBy = '', $orderBy = '', $limit = '')
     {
         $sql = "SELECT $fields FROM $table";
 
@@ -56,7 +55,23 @@ class Sql extends Database
             $sql .= " WHERE $conditionString";
         }
 
+        // Add GROUP BY clause if provided
+        if (!empty($groupBy)) {
+            $sql .= " GROUP BY $groupBy";
+        }
+
+        // Add ORDER BY clause if provided
+        if (!empty($orderBy)) {
+            $sql .= " ORDER BY $orderBy";
+        }
+
+        // Add LIMIT clause if provided
+        if (!empty($limit)) {
+            $sql .= " LIMIT $limit";
+        }
+
         // Print the final SQL query for debugging
+        
         // echo "<pre>";
         // echo "SQL Query: " . $sql . "\n";
         // print_r($conditions);
@@ -100,6 +115,26 @@ class Sql extends Database
         $this->bindValues(array_values($conditions));
 
         return $this->execute();
+    }
+    
+    // Get single data
+    public function getSingleData($table, $conditions = [], $columns = '*', $join = [])
+    {
+        $sql = "SELECT $columns FROM $table";
+
+        if (!empty($join)) {
+            foreach ($join as $key => $value) {
+                $sql .= " LEFT JOIN $key ON $value";
+            }
+        }
+
+        if (!empty($conditions))
+            $sql .= " WHERE " . implode(' AND ', array_map(fn($key) => "$key = ?", array_keys($conditions)));
+
+        $this->query($sql);
+        $this->bindValues(array_values($conditions));
+
+        return $this->single();
     }
 
     // Deactivate (soft delete) data

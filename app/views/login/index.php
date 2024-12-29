@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="background">
-        <div class="row mainComponent">
+        <div class="mainComponent">
             <div class="col-md-6">
                 <div class="backgroundImage">
                     <img src="<?php echo $GLOBALS['base_url']; ?>images/poster.png" alt="">

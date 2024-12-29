@@ -14,18 +14,6 @@
   </div>
 
   <div class="container">
-    <!-- Display success or error messages -->
-    <?php if (!empty($data['success'])): ?>
-        <div class="alert alert-success">
-          <?= htmlspecialchars($data['success']); ?>
-        </div>
-      <?php endif; ?>
-
-      <?php if (!empty($data['error'])): ?>
-        <div class="alert alert-danger">
-          <?= htmlspecialchars($data['error']); ?>
-        </div>
-      <?php endif; ?>
     <form action="" method="post">
       <div class="form-group">
         <label for="doctor">Search Doctor:</label>
@@ -178,48 +166,6 @@
   </div>
 
       
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const doctorSelect = document.getElementById('doctor');
-
-      // Variable to store typed characters
-      let searchBuffer = '';
-      let timeoutId;
-
-      // Function to search within the select options
-      doctorSelect.addEventListener('keydown', function(event) {
-        clearTimeout(timeoutId); // Clear the timeout for resetting the search buffer
-        
-        // Only process alphanumeric characters
-        if (/[a-zA-Z0-9]/.test(event.key)) {
-          searchBuffer += event.key.toLowerCase();  // Append the typed character to the buffer
-        } else if (event.key === 'Backspace') {
-          searchBuffer = searchBuffer.slice(0, -1);  // Remove the last character on backspace
-        }
-
-        let found = false;
-        for (let i = 0; i < doctorSelect.options.length; i++) {
-          const option = doctorSelect.options[i];
-          const doctorName = option.text.toLowerCase();
-
-          // Check if the option contains the search term
-          if (doctorName.startsWith(searchBuffer) && option.value !== "") {
-            option.selected = true;  // Select the matching option
-            found = true;
-            break;
-          }
-        }
-
-        // Reset the search buffer after a short delay (e.g., 1.5 seconds)
-        timeoutId = setTimeout(() => {
-          searchBuffer = '';
-        }, 1500);
-
-        // If no match is found, reset to the first option
-        if (!found) {
-          doctorSelect.selectedIndex = 0;
-        }
-      });
-    });
-  </script>
+  
 </main>
+<?php require_once '../app/views/templates/footer.php'; ?>

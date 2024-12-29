@@ -6,6 +6,7 @@ class Shifts extends Controller{
     public function __construct() {
         $this->db = new Database();
         $this->db = new Sql();
+        $this->auth_route = new AuthRoute();
     }
 
     public function getShift() {

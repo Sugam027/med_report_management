@@ -35,9 +35,14 @@ class App {
 
     // Parse the URL
     public function parseUrl() {
+       
         if (isset($_GET['url'])) {
-            return explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
+            $parsedUrl = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
+            // var_dump($parsedUrl); // Debug: Output the parsed URL
+            return $parsedUrl;
         }
+        
         return [];  // Return an empty array if no URL is provided
+        
     }
 }

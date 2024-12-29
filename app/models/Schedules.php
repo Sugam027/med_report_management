@@ -4,6 +4,7 @@ class Schedules{
     private $db;
     public function __construct() {
         $this->db = new Sql();
+        $this->auth_route = new AuthRoute();
     }
     
 
@@ -17,11 +18,30 @@ class Schedules{
     public function updateSchedule($scheduleData) {
         try {
             // Insert into users table
-            $this->db->insertData('doctor_schedule', $scheduleData); 
+            $this->db->beginTransaction();
+            // Insert into users table
+            $doctorId = $this->db->insertData('doctor_schedule', $scheduleData); 
+
+            if ($doctorId) {
+                // Create notification for doctor
+                $doctorNotification = [
+                    'user_id' => $scheduleData['user_id'],
+                    'message' => 'You have a new scheduled from tomorrow.',
+                ];
+                $this->db->insertData('notifications', $doctorNotification);
+    
+                // Commit transaction
+                $this->db->commit();
+                return true;
+            } else {
+                // Rollback transaction on failure
+                $this->db->rollback();
+                return false;
+            }
             
         } catch (Exception $e) {
             // Roll back the transaction in case of an error
-            error_log("Registration failed: " . $e->getMessage()); // Log the error message
+            error_log("Scheduling failed: " . $e->getMessage()); // Log the error message
             return false;
         }
     }

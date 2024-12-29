@@ -10,6 +10,7 @@
 .background .mainComponent {
     width: 70%;
     height: 60%;
+    display: flex;
     box-sizing: border-box;
 }
 .background .mainComponent .col-md-6 {

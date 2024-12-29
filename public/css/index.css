@@ -9,6 +9,7 @@
     /* --body-bg: #ced4da; */
     --body-bg: #bed5d0;
     --main-bg: #fff;
+    --light-black: #464646;
 }
 
 *{
@@ -31,10 +32,11 @@ li{
 }
 a{
     text-decoration: none;
+    color: #000;
 }
 
 ::-webkit-scrollbar{
-    width: 8px;
+    width: 5px;
 }
 ::-webkit-scrollbar-track{
     background-color: #cecece;
@@ -49,11 +51,23 @@ a{
 .row{
     display: flex;
     flex-wrap: wrap;
+    gap: 10px;
 
+}
+.col-md-4{
+    flex: 0 0 auto;
+    width: 32%;
 }
 .col-md-6{
     flex: 0 0 auto;
     width: 50%;
+}
+.col-md-8{
+    flex: 0 0 auto;
+    width: 66%;
+}
+.mb-2{
+    margin-bottom: 10px;
 }
 .form-control{
     display: block;
@@ -61,7 +75,7 @@ a{
     padding: .359rem .75rem;
     font-size: 1rem;
     font-weight: 400;
-    outline-color: #7CCC64;
+    outline-color: var(--aside-bg);
     background-color: #edeff1;
     border: 1px solid #dee2e6;
     border-radius: 0.375rem;
@@ -72,6 +86,11 @@ a{
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+tr td .pimage{
+    width: 50px;
+    height: 50px;
 }
 /* header css starts */
 
@@ -162,7 +181,8 @@ header .searchSetting .setting .headerProfile {
 }
 header .searchSetting .setting .headerProfile img {
     padding: 2px;
-    background-color: var(--bs-gray-100);
+    background-color: #adb5bd;
+    border: 2px solid #fff;
     border-radius: 50%;
     width: 100%;
     height: 100%;
@@ -177,7 +197,188 @@ header .searchSetting .setting .headerProfile img {
    }
 }
 
+.profileBackground {
+    position: relative;
+    top: 68px;
+    right: 20px;
+    background-color: var(--body-bg);
+    width: 300px;
+    float: right;
+    z-index: 90000;
+    border-radius: 15px;
+    padding: 20px;
+    color: #000;
+    box-shadow: 1px 1px 15px -5px #000;
+}
+.profileBackground p {
+    margin: 0;
+}
+.profileBackground .userProfile {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 2px solid #717171;
+    margin-bottom: 2px;
+}
+.profileBackground .userProfile .profile {
+    width: 35px;
+    height: 35px;
+}
+.profileBackground .userProfile .profile img {
+    padding: 2px;
+    background-color: #adb5bd;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.profileBackground .userProfile .name {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+.profileBackground .userProfile .userName {
+    color: var(--light-black);
+}
+.profileBackground .userProfile:hover {
+    background-color: var(--aside-bg);
+    border-radius: 10px;
+}
+.profileBackground .change {
+    padding: 10px;
+}
+.profileBackground .change p {
+    color: #001789;
+    cursor: pointer;
+}
+.profileBackground .change:hover {
+    background-color: var(--aside-bg);
+    border-radius: 10px;
+}
+.profileBackground .editDetails {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+}
+.profileBackground .editDetails:hover {
+    background-color: var(--aside-bg);
+    border-radius: 10px;
+}
+.profileBackground .help {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+}
+.profileBackground .help:hover {
+    background-color: var(--aside-bg);
+    border-radius: 10px;
+}
+.profileBackground .logout {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+}
+.profileBackground .logout:hover {
+    background-color: var(--aside-bg);
+    border-radius: 10px;
+}
+
+.session-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    z-index: 1000;
+    display: none; /* Initially hidden */
+    animation: fadeInOut 4s forwards; /* Animates fade-in and fade-out */
+}
+
+.session-message.success {
+    background-color: #fff; /* Green background for success */
+    color: #000;
+}
+
+.session-message.error {
+    background-color: #fff; /* Red background for error */
+    color: #f00;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(10px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(10px); }
+}
+
+.insertProfileBackground {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+}
+.insertProfileBackground .insertOverlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.insertProfileBackground .insertContent {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.insertProfileBackground .insertContent .changeProfile {
+    background-color: #fff;
+    width: 50%;
+    text-align: center;
+    padding: 2rem;
+    border-radius: 10px;
+    z-index: 1;
+    position: relative;
+}
+.insertProfileBackground .insertContent .changeProfile .cross{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+.insertProfileBackground .insertContent .changeProfile .cross:hover{
+    opacity: 0.7;
+}
+.insertProfileBackground .insertContent .changeProfile p {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.insertProfileBackground .insertContent .changeProfile .updateBtn {
+    background-color: var(--aside-bg);
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-left: 20px;
+}
+.insertProfileBackground .insertContent .changeProfile .updateBtn:hover {
+    opacity: 0.8;
+}
+
+
 /* header css ends */
+
+
 
 /* aside css starts */
 /* Main aside container */
@@ -271,7 +472,7 @@ aside .menu .nav-item .nav-link .arrow{
     margin-top: 10px;
 }
 .nav-item ul .sub-item .sub-nav-link {
-    color: #454545;
+    color: #373030;
 }
 .nav-item ul .sub-item .sub-nav-link:hover {
     color: #000;
@@ -303,7 +504,7 @@ main{
     top: 70px;
     background-color: var(--body-bg);
     box-sizing: border-box;
-    padding: 20px;
+    padding: 10px;
 }
 main p{
         margin: 0;
@@ -329,45 +530,105 @@ main .container{
         z-index: 1;
         overflow-y: auto;
 }
+
+main form .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 15px 0;
+}
+main form .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 15px;
+    margin-bottom: 10px;
+}
+main form .row .form-group {
+    flex-basis: 32%;
+}
+main form p {
+    font-size: 1.2rem;
+}
+main form .button-group {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: end; 
+    gap: 10px;
+}
+main form .button-group .btnColor {
+    background-color: #0078d7;
+    margin-top: 0.7rem;
+    padding: 0.4rem 1.4rem;
+    color: #fff;
+}
+main form .button-group .btnColor:hover {
+    opacity: 0.9;
+}
+main form .button-group .btnSubmit {
+    margin-top: 0.7rem;
+    font-size: 1.1rem;
+    padding: 0.4rem 1.4rem;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--aside-bg);
+}
+main form .button-group .btnSubmit:hover {
+    opacity: 0.9;
+}
 /* main css ends */
 
 
+main .searchInput{
+    width: 500px;
+    display: block;
+    padding: .359rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    outline-color: #7CCC64;
+    outline-color: var(--aside-bg);
+    background-color: #edeff1;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    margin-top: 5px;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
 
-main .container .recordsMenu {
+main .recordsMenu {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
 }
-main .container .recordsMenu span {
+main .recordsMenu span {
     font-size: 1.5rem;
     font-weight: 600;
 }
-main .container .recordsMenu ul {
+main .recordsMenu ul {
     display: flex;
     gap: 10px;
     list-style: none;
     margin: 0;
 }
-main .container .recordsMenu ul li {
+main .recordsMenu ul li {
     padding: 5px 10px;
     background-color: #fff;
     border-radius: 10px;
     cursor: pointer;
 }
-main .container .recordsMenu ul li.active {
+main .recordsMenu ul li.active {
     background-color: var(--sec-color);
 }
-main .container .records {
+main .records {
     background-color: #fff;
     display: flex;
     gap: 0.9rem;
     margin-bottom: 1rem;
     padding: 0.5rem;
-    border-radius: 10px;
+    border-left:var(--aside-bg) 5px solid;
+    border-radius: 3px;
     box-shadow: 0px 1px 5px 0px;
 }
-main .container .records .date {
+main .records .date {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -375,93 +636,176 @@ main .container .records .date {
     box-sizing: border-box;
     text-align: center;
 }
-main .container .records .date .day {
+main .records .date .day {
     padding: 13px;
-    padding-top: 0;
+    padding-top: 4px;
     font-size: 13px;
     font-weight: 800;
 }
-main .container .records .cardBody {
+main .records .cardBody {
     width: 90%;
 }
-main .container .records .cardBody .cardTitle {
+main .records .cardBody .cardTitle {
     width: 100%;
     border-bottom: 1px solid #262525;
 }
-main .container .records .cardBody .cardTitle .hospitalName p {
+main .records .cardBody .cardTitle .hospitalName p {
     font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
 }
-main .container .records .cardBody .cardTitle .hospitalAddress p {
+main .records .cardBody .cardTitle .hospitalAddress p {
     color: #717171;
 }
-main .container .records .cardBody .cardInfo {
+main .records .cardBody .cardInfo {
     display: flex;
     justify-content: space-between;
     margin-top: 0.5rem;
     flex-wrap: wrap;
 }
-main .container .records .cardBody .cardInfo h4 {
+main .records .cardBody .cardInfo h4 {
     font-size: 1.2rem;
     font-weight: 400;
     color: var(--aside-bg);
 }
-main .container .records .cardBody .cardInfo .doctorDetail {
+main .records .cardBody .cardInfo .doctorDetail {
     display: flex;
     gap: 0.8rem;
     align-items: center;
     flex-wrap: wrap;
     cursor: pointer;
 }
-main .container .records .cardBody .cardInfo .doctorDetail .doctorImage {
+main .records .cardBody .cardInfo .doctorDetail .doctorImage {
     width: 50px;
     height: 50px;
 }
-main .container .records .cardBody .cardInfo .doctorDetail .doctorImage img {
+main .records .cardBody .cardInfo .doctorDetail .doctorImage img {
     border-radius: 50%;
     width: 100%;
     height: 100%;
     object-fit: fill;
 }
-main .container .records .cardBody .cardInfo .doctorDetail .doctorProfile .doctorName {
+main .records .cardBody .cardInfo .doctorDetail .doctorProfile .doctorName {
     font-size: 1.1rem;
     font-weight: 600;
 }
-main .container .records .cardBody .cardInfo .doctorDetail .doctorProfile .doctorEmail {
+main .records .cardBody .cardInfo .doctorDetail .doctorProfile .doctorEmail {
     color: #717171;
 }
-main .container .records .cardBody .cardInfo .doctorCategory {
+main .records .cardBody .cardInfo .doctorCategory {
     margin-top: 0.9rem;
 }
-main .container .records .cardBody .cardInfo .doctorCategory .doctorField {
+main .records .cardBody .cardInfo .doctorCategory .doctorField {
     color: #717171;
 }
-main .container .records .cardBody .cardInfo .examination .examinationTitle {
+main .records .cardBody .cardInfo .examination .examinationTitle {
+    font-size: 1.1rem;
     font-weight: 600;
 }
-main .container .records .cardBody .cardInfo .examination .examinationDetails {
+main .records .cardBody .cardInfo .examination .examinationDetails {
     color: #717171;
 }
-main .container .records .cardBody .cardInfo .prescription .prescriptionTitle {
+main .records .cardBody .cardInfo .prescription .prescriptionTitle {
+    font-size: 1.1rem;
     font-weight: 600;
 }
-main .container .records .cardBody .cardInfo .prescription .prescriptionList .prescriptionItem {
+main .records .cardBody .cardInfo .prescription .prescriptionList .prescriptionItem {
     color: #717171;
 }
-main .container .records .cardBody .cardInfo .prescription .prescriptionList .prescriptionItem span {
+main .records .cardBody .cardInfo .prescription .prescriptionList .prescriptionItem span {
     color: #000;
     font-size: 18px;
 }
-main .container .records .cardBody .cardInfo .expandButton .expand {
+main .records .cardBody .cardInfo .prescription .prescriptionList .medicineItem span {
+    color: var(--light-black);
+    font-size: 0.9rem;
+}
+main .records .cardBody .cardInfo .expandButton .expand {
     padding: 0.4rem 1.2rem;
     background-color: var(--sec-color);
     border-radius: 0.7rem;
     display: inline-block;
     cursor: pointer;
 }
-main .container .records .cardBody .cardInfo .expandButton .expand:hover {
+main .records .cardBody .cardInfo .expandButton .expand:hover {
     background-color: var(--aside-bg);
 }
 
 
+
+/* main add prescription form starts*/
+
+main .container .prescriptionForm p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+/* main form select  {
+    color: #808080;
+} */
+main form select option:disabled {
+    color: light-dark(graytext, #aaa);
+}
+main .container .prescriptionForm .btnSubmit {
+    margin-top: 0.7rem;
+    padding: 0.4rem 1.4rem;
+    color: #fff;
+    display: block;
+    background-color: var(--aside-bg);
+}
+main .container .prescriptionForm .btnSubmit:hover {
+    opacity: 0.9;
+}
+main .container .prescriptionForm .button-group .btn{
+    width: 32px;
+    height: 32px;
+
+}
+
+
+/* main add prescription form starts*/
+
+
+/* change password */
+.background{
+    /* height: 100vh; */
+    /* background: linear-gradient(var(--body-bg), #6f7e39); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+main .change-password-form {
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0 rgba(10, 10, 10, 0.5);
+}
+main .change-password-form form .form-group {
+    margin-bottom: 1rem;
+}
+main .change-password-form form .form-group label {
+    font-size: 1.2rem;
+}
+main .change-password-form form .form-group .form-control {
+    padding: 0.475rem 0.75rem;
+}
+main .change-password-form form .form-group .form-control:focus {
+    box-shadow: 1px 1px 5px #7ccc64;
+}
+main .change-password-form form .form-group .form-control::placeholder {
+    color: #a9acac;
+}
+main .change-password-form form .btn {
+    width: 100%;
+    background-color: var(--sec-color);
+    color: #000;
+    font-size: 1.2rem;
+}
+main .change-password-form form .btn:hover {
+    opacity: 0.8;
+}
+
+/* chanage password ends */

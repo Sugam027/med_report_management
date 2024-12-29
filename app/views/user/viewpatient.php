@@ -11,6 +11,7 @@
           <thead>
             <tr>
               <th>S.N</th>
+              <th>Image</th>
               <th>UserId</th>
               <th>Name</th>
               <th>Username</th>
@@ -25,14 +26,19 @@
           <?php foreach ($data['patients'] as $patient): ?>
             <tr key={index}>
                 <td><?= $index++ ?></td>
+                <td>
+                    <img class="pimage" src="/uploads/profile_images/<?= htmlspecialchars($patient['image']); ?>" alt="">
+                </td>
                 <td><?= htmlspecialchars($patient['user_id']); ?></td>
                 <td><?= htmlspecialchars($patient['name']); ?></td>
                 <td><?= htmlspecialchars($patient['username']); ?></td>
                 <td><?= htmlspecialchars($patient['phone']); ?></td>
-                <td>Active</td>
+                <td>
+                  <?= $patient['is_active'] ? '<span class="status checked">Active</span>' : '<span class="status pending">Inactive</span>'; ?>
+                </td>
                 <td>
                     <a href="" class="btn btn-primary me-2">Edit</a>
-                    <button class='btn btn-danger'>Deactivate</button>
+                    <button class="btn btn-danger" onclick="location.href='/user/deactiveUser/<?= $patient['user_id'] ?>'">Deactivate</button>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -46,3 +52,4 @@
 
 
 </main>
+<?php require_once '../app/views/templates/footer.php'; ?>

@@ -5,6 +5,7 @@ class Roles extends Controller{
 
     public function __construct() {
         $this->db = new Database();
+        $this->auth_route = new AuthRoute();
     }
 
     // Get all roles

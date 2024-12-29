@@ -2,112 +2,73 @@
 <?php require_once '../app/views/templates/aside.php'; ?>
 
 <main>
-  <div class="heading">
-    <p class="headingName">Create Appointment</p>
-  </div>
-
-  <div class="registerUser">
-    <div class="container">
-      <form action="" >
-        <div class="row mb-2">
-        <div class="form-group">
-            <label>Appointment Date:</label>
-            <input
-              type="date"
-              class="form-control"
-              name="date"
-            />
-          </div>
-          <div class="form-group">
-            <label>Appointment Time</label>
-            <input
-              type="text"
-              value=""
-              name="time"
-              class="form-control"
-              placeholder="Appointment Time"
-
-            />
-          </div>
+    <div class="heading titleHead">
+        <p class="headingName"><?= ($_SESSION['role_id'] === 1) ? 'All Appointments' : 'My Appointments'; ?></p>
+        <?= ($_SESSION['role_id'] === 1) ? ( 
+        '<div class="button-group">
+            <a href="/appointment/create"><p class="btn">Create new appointment</p></a>
         </div>
-        <div class="row mb-2">
-          <div class="form-group">
-            <label>Full name</label>
-            <input
-              type="text"
-              value=""
-              onChange={handleFullNameChange}
-              class="form-control"
-              placeholder="Fullname"
-            />
-          </div>
-          
-          <div class="form-group">
-            <label>Age</label>
-            <input
-              type="number"
-              class="form-control"
-              placeholder="Age"
-              readOnly
-            />
-          </div>
-         
-          <div class="form-group">
-            <label>Phone</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Phone"
-            />
-          </div>
-        </div>
-        <div class="form-group">
-            <label>Symptoms </label>
-            
-            <textarea
-              type="text"
-              name="perTole"
-              class="form-control"
-            ></textarea>
-          </div>
-        <div class="row mb-2">
-          <div class="form-group">
-            <label>Department</label>
-            <select
-              defaultValue=""
-              name="perProvince"
-              class="form-control">
-              <option value="" disabled>
-                {" "}
-                -- Select Province --{" "}
-              </option>
-              
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Consultant Doctor</label>
-            <select
-              name="doctor"
-              id=""
-              class="form-control">
-              <option value="undefined" disabled selected> --Select Doctor-- </option> 
-              <?php foreach($data['doctors'] as $doctor): ?>
-                <option name="doctor" value="<?= $doctor['user_id']; ?>"><?= $doctor['name']; ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-           
-           
-          
-        </div>
-       
-        <div class="button-group">
-          <button type="submit" class="btn btnSubmit">
-            Create
-          </button>
-        </div>
-      </form>
+        '
+        ) : ''; ?>
     </div>
-  </div>
+    <div class="tableContainer">
+      <?php if (!empty($data['appointments'])): ?>
+        <table class="table">
+        <thead>
+                <tr>
+                    <th>S.N</th>
+                    <th>Patient Name</th>
+                    <th>Phone</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <?php if($_SESSION['role_id'] === 1): ?>
+                    <th>Doctor Name</th>
+                    <?php endif; ?>
+                    <th>Status</th>
+                    <?php if($_SESSION['role_id'] === 2): ?>
+                    <th>Action</th>
+                    <?php endif; ?>
+                </tr>
+            </thead>
+            <tbody>
+            <?php $index=1 ?>
+            <?php foreach ($data['appointments'] as $appointment) : ?>
+                <tr key={index}>
+                    <td><?= $index++ ?></td>
+                    <td><?= htmlspecialchars($appointment['patient_name']) ?></td>
+                    <td><?= htmlspecialchars($appointment['phone']) ?></td>
+                    <td><?= htmlspecialchars($appointment['date']) ?></td>
+                    <td><?= htmlspecialchars($appointment['time']) ?></td>
+                    <?php if($_SESSION['role_id'] === 1): ?>
+                    <td><?= htmlspecialchars($appointment['doctor_name']) ?></td>
+                    <?php endif; ?>
+                    <td>
+                    <?= $appointment['status'] ? '<span class="status checked">Checked</span>' : '<span class="status pending">Pending</span>'; ?>
+                    </td>
+                    <?php if($_SESSION['role_id'] === 2): ?>
+                    <td>
+                    <form action="/appointment/updateStatus" method="POST" style="display:inline;">
+                        <input type="hidden" name="appointment_id" value="<?= $appointment['appointment_id'] ?>">
+                        <input type="hidden" name="status" value="true">
+                        <button type="submit" class="btn mark-checked">C</button>
+                    </form>
+                    <button class="btn view-prescription" onclick="location.href='/prescription/add/<?= $appointment['appointment_id'] ?>'">
+                        A
+                    </button>
+                    <?php if ($appointment['status']): ?>
+                        <button class="btn view-prescription" onclick="location.href='/prescription/viewpatient/<?= $appointment['patient_id'] ?>'">
+                            V
+                        </button>
+                    <?php endif; ?>
+                    </td>
+                    <?php endif; ?>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php else: ?>
+          <p>No Appointments!</p>
+      <?php endif; ?>
+    </div>
 </main>
+<?php require_once '../app/views/templates/footer.php'; ?>

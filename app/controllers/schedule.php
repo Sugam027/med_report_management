@@ -1,12 +1,13 @@
 <?php
 
-class schedule extends Controller{
+class schedule extends BaseController{
 
     private $userModel;
     private $shiftModel;
     private $scheduleModel;
 
     public function __construct() {
+        parent::__construct();
         // Load the User and Role models
         $this->userModel = $this->model('Users');
         $this->shiftModel = $this->model('Shifts');
@@ -33,9 +34,7 @@ class schedule extends Controller{
     public function manage_schedule(){
         $doctors = $this->userModel->getDoctors();  // Get all doctors
         $data = [
-            'doctors' => $doctors,
-            'success' => $_SESSION['success'] ?? null,
-            'error' => $_SESSION['error'] ?? null,
+            'doctors' => $doctors
         ];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -83,25 +82,21 @@ class schedule extends Controller{
                 }
             }
 
-            echo '<pre>'; print_r($scheduleData); echo '</pre>'; 
-
-            
-
             // Save the scheduleData in the database
             try {
                 $result = $this->scheduleModel->updateSchedule($scheduleData);
                 if ($result) {
                     // Set success message
-                    $data['success'] = 'Schedule updated successfully.';
+                    $this->auth_route->setSessionMessage(true, 'Schedule updated successfully.');
                 } else {
                     // Set error message
-                    $data['error'] = 'Schedule updation failed. Please try again.' ;
+                    $this->auth_route->setSessionMessage(false, 'Schedule updation failed. Please try again.');
                 }
             } catch (Exception $e) {
                 // Log the error for debugging
                 error_log($e->getMessage());
                 // Set error message
-                $data['error'] = 'An error occurred during registration: ' . $e->getMessage();
+                $this->auth_route->setSessionMessage(false, 'Schedule updation failed. Please try again.');
             }
         }
 
