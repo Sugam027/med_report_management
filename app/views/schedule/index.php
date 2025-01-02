@@ -29,6 +29,7 @@
           </thead>
 
           <tbody>
+          <tbody></tbody>
           <?php $index = 1; ?>
           <?php foreach ($data['scheduleData'] as $sData): ?>
             <tr>
@@ -39,7 +40,7 @@
                 <td><?= htmlspecialchars($sData['end_time']); ?></td>
                 <td><?= htmlspecialchars($sData['status']); ?></td>
                 <td>
-                    <a href="" class="btn btn-primary me-2">Edit</a>
+                  <a href="/schedule/manage_schedule?user_id=<?= $sData['user_id']; ?>" class="btn btn-primary me-2">Edit</a>
                 </td>
             </tr>
           <?php endforeach; ?>

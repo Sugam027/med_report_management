@@ -3,10 +3,6 @@
 
 <main>
   <?php $role = Session::get('role_id') ?>
-  <!-- <pre>
-    <?php print_r($data['prescriptions']) ?>
-  </pre> -->
-
   <?php if($role === 1): ?>
     <div class="heading titleHead">
     <p class="headingName">Patient List</p>
@@ -134,6 +130,11 @@
     </div> 
   <?php endif; ?>
   <?php if($role === 3): ?>
+    <div class="heading titleHead">
+    <div class="searchBar">
+      <input type="search" class="searchInput" placeholder="Search" />
+    </div>
+    </div>
     <div class="container">
       <div class="recordsMenu">
           <span>Records History</span>
@@ -159,12 +160,17 @@
             <p class="day"><?= htmlspecialchars($prescription['date']); ?></p>
           </div>
           <div class="cardBody">
-            <div class="cardTitle">
-              <div class="hospitalName">
-                <p>Family Hospital</p>
+            <div class="cardTitle" style="display: flex; justify-content: space-between; align-items: center">
+              <div>
+                <div class="hospitalName">
+                  <p>Family Hospital</p>
+                </div>
+                <div class="hospitalAddress">
+                  <p>BudhanilKantha</p>
+                </div>
               </div>
-              <div class="hospitalAddress">
-                <p>BudhanilKantha</p>
+              <div class="generate-pdf">
+                  <button onclick="window.location.href='/generatepdf/generatePatientReport?app_id=<?= $prescription['appointment_id'] ?>', '_blank'">Generate PDF</button>
               </div>
             </div>
             <div class="row cardInfo">
@@ -185,6 +191,10 @@
                 </div>
               </div>
               <div class="col-md-8">
+                <div class="examination">
+                  <p class="examinationTitle">Disease</p>
+                  <p class="examinationDetails"><?= htmlspecialchars($prescription['disease']); ?></p>
+                </div>
                 <div class="examination">
                   <p class="examinationTitle">Examination</p>
                   <p class="examinationDetails"><?= htmlspecialchars($prescription['examination_detail']); ?></p>
@@ -347,65 +357,5 @@
        
  
 </main>
-<!-- <script>
-  // JavaScript for filtering records
-
-document.addEventListener("DOMContentLoaded", function () {
-    const filterMenuItems = document.querySelectorAll(".recordsMenu ul li");
-    const records = document.querySelectorAll(".records");
-
-    filterMenuItems.forEach((item) => {
-        item.addEventListener("click", () => {
-            // Remove the active class from all menu items
-            filterMenuItems.forEach((menuItem) => menuItem.classList.remove("active"));
-
-            // Add the active class to the clicked menu item
-            item.classList.add("active");
-
-            // Get the selected filter
-            const filter = item.textContent.trim().toLowerCase();
-
-            // Get the current date
-            const currentDate = new Date();
-            const today = currentDate.toISOString().split("T")[0];
-            console.log(today);
-            const yesterday = new Date(currentDate);
-            yesterday.setDate(currentDate.getDate() - 1);
-            const yesterdayDate = yesterday.toISOString().split("T")[0];
-
-            // Define date ranges for filters
-            const filters = {
-                all: () => true,
-                today: (recordDate) => recordDate === today,
-                yesterday: (recordDate) => recordDate === yesterdayDate,
-                "last week": (recordDate) => {
-                    const lastWeek = new Date(currentDate);
-                    lastWeek.setDate(currentDate.getDate() - 7);
-                    return new Date(recordDate) >= lastWeek && new Date(recordDate) <= currentDate;
-                },
-                "last month": (recordDate) => {
-                    const lastMonth = new Date(currentDate);
-                    lastMonth.setMonth(currentDate.getMonth() - 1);
-                    return new Date(recordDate) >= lastMonth && new Date(recordDate) <= currentDate;
-                },
-                "last year": (recordDate) => {
-                    const lastYear = new Date(currentDate);
-                    lastYear.setFullYear(currentDate.getFullYear() - 1);
-                    return new Date(recordDate) >= lastYear && new Date(recordDate) <= currentDate;
-                }
-            };
-
-            // Filter the records
-            records.forEach((record) => {
-                const recordDate = record.querySelector(".date .day").textContent.trim().replace(/\s+/g, "-");
-                const showRecord = filters[filter] ? filters[filter](recordDate) : false;
-
-                // Show or hide the record based on the filter
-                record.style.display = showRecord ? "flex" : "none";
-            });
-        });
-    });
-});
-</script> -->
 
 <?php require_once '../app/views/templates/footer.php'; ?>

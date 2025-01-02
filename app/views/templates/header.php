@@ -32,7 +32,7 @@
             <div class="setting">
                 <img src="/images/setting.png" alt="setting" >
                 <div class="headerProfile">
-                    <img src="/uploads/profile_images/<?= $userData['image'] ?>" alt="profile" >
+                    <img src="/uploads/profile_images/<?= htmlspecialchars($userData['image']) ?>" alt="profile" >
                 </div>
             </div>
         </div>

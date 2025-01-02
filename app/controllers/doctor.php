@@ -9,6 +9,7 @@ class doctor extends BaseController{
         $this->userModel = $this->model('Users');
     }
     public function index() {
+        $this->auth_route->checkPermission([1,2,3]);
         $doctors = $this->userModel->getDoctors();  // Get all doctors
         $data = [
             'doctors' => $doctors,

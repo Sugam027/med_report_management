@@ -14,6 +14,7 @@ class prescription extends BaseController{
         $this->userModel = $this->model('Users');
     }
     public function index() {
+        $this->auth_route->checkPermission([1,2,3]);
         $userId = $_SESSION['user_id']; // Get the logged-in user's ID
         $userRoleId = $_SESSION['role_id'];
         $patients = null;
@@ -67,7 +68,6 @@ class prescription extends BaseController{
         ];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            print_r($_POST);
             $appointmentId = $_POST['appointment_id'];
             $disease = $_POST['disease'];
             $examinationDetail = $_POST['examination_detail'];
@@ -84,9 +84,6 @@ class prescription extends BaseController{
                         'medicine_name' => $medicine,
                         'instructions' => $instructions[$index]
                     ];
-                    if($this->prescriptionModel->add($prescriptionData)){
-
-                    }
                     $this->prescriptionModel->add($prescriptionData);
                 }
             }

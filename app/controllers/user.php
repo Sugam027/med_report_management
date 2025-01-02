@@ -15,7 +15,10 @@ class user extends BaseController{
     }
 
     public function registeruser() {
+        $this->auth_route->checkPermission([1]);
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+
         // Collect form data
         // echo '<pre>'; print_r($_POST); echo '</pre>'; 
         $userData = [
@@ -68,7 +71,7 @@ class user extends BaseController{
                     'email' => $userData['email']
                 ];
                 if ($mailer->accountCreationMail($mailData)) {
-                    $this->auth_route->setSessionMessage(true, ' An email with login credentials has been sent.');
+                    $this->auth_route->setSessionMessage(true, 'User registered and an email with login credentials has been sent.');
                 } else {
                      $this->auth_route->setSessionMessage(false, 'User registered, but the email could not be sent.');
                 }
@@ -124,6 +127,7 @@ class user extends BaseController{
 
 
     public function viewdoctor() {
+        $this->auth_route->checkPermission([1,2]);
         $doctors = $this->userModel->getDoctors();  // Get all doctors
         $data = [
             'doctors' => $doctors,
@@ -132,6 +136,7 @@ class user extends BaseController{
         $this->view('user/viewdoctor', $data);
     }
     public function viewpatient() {
+        $this->auth_route->checkPermission([1,2]);
         $userRoleId = $_SESSION['role_id'];
         $doctorId = $_SESSION['user_id'];
         $patients = $this->userModel->getPatients(); // Get all patients

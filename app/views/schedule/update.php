@@ -1,10 +1,6 @@
 <?php require_once '../app/views/templates/header.php'; ?>
 <?php require_once '../app/views/templates/aside.php'; ?>
 
-
-<pre>
-  <?php print_r($_GET['user_id']); ?>
-</pre>
 <main>
   <div class="heading titleHead">
     <p class="headingName">Doctor Timing</p>
@@ -22,8 +18,7 @@
         <select id="doctor" name="user_id" class="form-control" required>
             <option value="" disabled selected>Select a doctor</option>
             <?php foreach ($data['doctors'] as $doctor): ?>
-              <?php $selectedDoctorId = $_GET['user_id'] ?? ''; ?>
-                <option value="<?= $doctor['user_id']; ?>" <?= $doctor['user_id'] == $selectedDoctorId ? 'selected' : ''; ?>>
+                <option value="<?= $doctor['user_id']; ?>">
                     <?= $doctor['name']; ?>
                 </option>
             <?php endforeach; ?>
@@ -67,17 +62,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const shiftCheckboxes = document.querySelectorAll(".shift-checkbox");
     const shiftMap = { "1": "morning", "2": "evening", "3": "night", "4": "leave" };
 
-    // Function to fetch and populate shift data
-    function fetchAndPopulateSchedule(doctorId) {
-        if (!doctorId) return;
+    doctorSelect.addEventListener("change", function () {
+        const doctorId = this.value;
 
         // Clear all checkboxes
         shiftCheckboxes.forEach(checkbox => (checkbox.checked = false));
 
-        // Show loading spinner
-        document.body.classList.add('loading');
-
-        // Fetch schedule data
+        // Fetch schedule data for the selected doctor
         fetch('/schedule/getDoctorSchedule/' + doctorId)
             .then(response => response.json())
             .then(data => {
@@ -96,27 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
             })
-            .catch(error => console.error('Error fetching schedule data:', error))
-            .finally(() => {
-                // Hide loading spinner
-                document.body.classList.remove('loading');
-            });
-    }
-
-    // Event listener for dropdown change
-    doctorSelect.addEventListener("change", function () {
-        const doctorId = this.value;
-        fetchAndPopulateSchedule(doctorId);
+            .catch(error => console.error('Error fetching schedule data:', error));
     });
-
-    // Check for preselected doctor ID from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const preselectedDoctorId = urlParams.get("user_id");
-
-    if (preselectedDoctorId) {
-        doctorSelect.value = preselectedDoctorId; // Set the dropdown value
-        fetchAndPopulateSchedule(preselectedDoctorId); // Fetch and populate the schedule
-    }
 });
 
 </script>

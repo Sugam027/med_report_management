@@ -17,14 +17,16 @@
               <th>Phone</th>
               <th>Email</th>
               <th>Status</th>
+              <?php if(Session::get('role_id') === 1): ?>
               <th>Action</th>
+              <?php endif; ?>
             </tr>
           </thead>
 
           <tbody>
           <?php $index=1 ?>
           <?php foreach ($data['doctors'] as $doctor): ?>
-            <tr key={index}>
+            <tr key="<?= $index++ ?>">
                 <td><?= $index++ ?></td>
                 <td>
                     <img class="pimage" src="/uploads/profile_images/<?= htmlspecialchars($doctor['image']); ?>" alt="">
@@ -36,10 +38,13 @@
                 <td>
                   <?= $doctor['is_active'] ? '<span class="status checked">Active</span>' : '<span class="status pending">Inactive</span>'; ?>
                 </td>
+                <?php if(Session::get('role_id') === 1): ?>
                 <td>
                     <a href="" class="btn btn-primary me-2">Edit</a>
                     <button class="btn btn-danger" onclick="location.href='/user/deactiveUser/<?= $patient['user_id'] ?>'">Deactivate</button>
                 </td>
+              <?php endif; ?>
+
             </tr>
             <?php endforeach; ?>
                  

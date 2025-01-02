@@ -11,7 +11,7 @@
 
   <div class="registerUser">
     <div class="container">
-      <form action="" method="post">
+      <form id="create-appointment" action="" method="POST">
         <div class="row mb-2">
         <div class="form-group">
             <label>Appointment Date:</label>
@@ -79,11 +79,12 @@
             <label>Department</label>
             <select
                 name="department_id"
+                id="department-select"
                 defaultValue=""
                 class="form-control">
                 <option value="" disabled selected> --Select Department-- </option> 
                 <?php foreach($data['departments'] as $department): ?>
-                  <option name="department_id" value="<?= $department['id']; ?>"><?= $department['name']; ?></option>
+                  <option value="<?= $department['id']; ?>"><?= $department['name']; ?></option>
                 <?php endforeach; ?>
               </select>
           </div>
@@ -92,7 +93,7 @@
             <label>Consultant Doctor</label>
             <select
               name="doctor_id"
-              id=""
+              id="doctor-select"
               class="form-control">
               <option value="undefined" disabled selected> --Select Doctor-- </option> 
               
@@ -104,7 +105,7 @@
         </div>
        
         <div class="button-group">
-          <button type="submit" class="btn btnSubmit">
+          <button class="btn btnSubmit">
             Create
           </button>
         </div>
@@ -124,7 +125,6 @@
       fetch('/appointment/getDoctorsByDepartment/' + departmentId)
         .then(response => response.json())
         .then(data => {
-          console.log('Doctors for selected department:', data);
           // Get the doctor dropdown element
           var doctorSelect = document.querySelector("select[name='doctor_id']");
 
@@ -145,6 +145,94 @@
 
   // Attach event listener to department dropdown
   document.querySelector("select[name='department_id']").addEventListener("change", onDepartmentChange);
+
+  // Form validation function
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('create-appointment');
+
+    if (!form) {
+    console.error('Form element not found.');
+    return;
+    }
+
+   // console.log('Form validation initialized');
+
+    form.addEventListener('submit', function (event) {
+      let isValid = true;
+
+      // Clear all previous error messages
+      const errorElements = document.querySelectorAll('.error-message');
+      errorElements.forEach(el => el.remove());
+
+      // Helper function to show error
+      const showError = (element, message) => {
+        const error = document.createElement('span');
+        error.className = 'error-message text-danger';
+        error.textContent = message;
+        element.parentNode.appendChild(error);
+        isValid = false;
+      };
+
+      const date = document.querySelector("input[name='date']");
+      const time = document.querySelector("input[name='time']");
+      const patientName = document.querySelector("input[name='patient_name']");
+      const age = document.querySelector("input[name='age']");
+      const phone = document.querySelector("input[name='phone']");
+      const symptoms = document.querySelector("textarea[name='symptoms']");
+      const department = document.getElementById("department-select");
+      const doctor = document.getElementById("doctor-select");
+
+      // Validation rules
+    if (!date.value) {
+      showError(date, "Appointment date is required.");
+      isValid = false;
+    }
+
+    if (!time.value) {
+      showError(time, "Appointment time is required.");
+      isValid = false;
+    }
+
+    if (!patientName.value.trim()) {
+      showError(patientName, "Full name is required.");
+      isValid = false;
+    }
+
+    if (!age.value || age.value < 0 || age.value > 120) {
+      showError(age, "Please enter a valid age.");
+      isValid = false;
+    }
+
+    if (!phone.value || !/^\d{10}$/.test(phone.value)) {
+      showError(phone, "Please enter a valid 10-digit phone number.");
+      isValid = false;
+    }
+
+    if (!symptoms.value.trim()) {
+      showError(symptoms, "Symptoms field cannot be empty.");
+      isValid = false;
+    }
+
+    if (!department.value) {
+      showError(department, "Please select a department.");
+      isValid = false;
+    }
+
+    if (!doctor.value) {
+      showError(doctor, "Please select a consultant doctor.");
+      isValid = false;
+    }
+
+     // Prevent form submission if validation fails
+     if (!isValid) {
+      event.preventDefault(); // Prevent submission
+    } else {
+      // Allow form submission only if valid
+      form.submit();
+    }
+  });
+});
+
 </script>
 
 <?php require_once '../app/views/templates/footer.php'; ?>

@@ -13,7 +13,7 @@
             <p class="patientName mb-2">Patient Name: <?= htmlspecialchars($data['appointment']['patient_name']) ?></p>
         
         <?php endif; ?>
-        <form class="prescriptionForm" id="prescriptionForm" action="" method="post">
+        <form class="prescriptionForm" id="prescriptionForm" action="" method="POST">
             <div class="form-group mb-2">
             <input type="hidden" name="appointment_id" value="<?= $data['appointment']['appointment_id'] ?>">
             </div>
@@ -50,10 +50,61 @@
             <div id="prescriptionContainer">
                 
             </div>
-            <button type="submit" class="btn btnSubmit">Save</button>
+            <button class="btn btnSubmit">Save</button>
         </form>
     </div>
 
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('prescriptionForm');
+
+    if (!form) {
+    console.error('Form element not found.');
+    return;
+    }
+
+   // console.log('Form validation initialized');
+
+    form.addEventListener('submit', function (event) {
+      let isValid = true;
+
+      // Clear all previous error messages
+      const errorElements = document.querySelectorAll('.error-message');
+      errorElements.forEach(el => el.remove());
+
+      // Helper function to show error
+      const showError = (element, message) => {
+        const error = document.createElement('span');
+        error.className = 'error-message text-danger';
+        error.textContent = message;
+        element.parentNode.appendChild(error);
+        isValid = false;
+      };
+
+      // Validate disease field
+      const diseaseField = document.getElementById('disease');
+      if (!diseaseField.value.trim()) {
+        showError(diseaseField, 'Disease field is required.');
+      }
+
+      // Validate examination detail
+      const examinationField = document.getElementById('examinationDetail');
+      if (!examinationField.value.trim()) {
+        showError(examinationField, 'Examination detail is required.');
+      }
+
+     // Prevent form submission if validation fails
+     if (!isValid) {
+      event.preventDefault(); // Prevent submission
+    } else {
+      // Allow form submission only if valid
+      form.submit();
+    }
+  });
+});
+
+</script>
 
 <?php require_once '../app/views/templates/footer.php'; ?>

@@ -1,6 +1,9 @@
+.text-danger{
+    color: #f00;
+}
 .background {
     height: 100vh;
-    background: linear-gradient(var(--body-bg), #6f7e39);
+    background: linear-gradient(var(--body-bg), var(--aside-bg));
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,7 +36,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(124, 204, 100, 0.8);
+    background-color: rgba(23, 184, 144, 0.8);
 }
 .background .mainComponent .col-md-6 .info {
     position: absolute;

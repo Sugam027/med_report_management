@@ -10,6 +10,7 @@ class Sql extends Database
     // Insert data into a table
     public function insertData($table, $data){
         try {
+            
             $keys = implode(', ', array_keys($data));
             $placeholders = implode(', ', array_fill(0, count($data), '?'));
 
@@ -21,11 +22,12 @@ class Sql extends Database
             error_log("Executing SQL: $sql with values: " . json_encode(array_values($data)));
 
             if ($this->execute()) {
-                return $this->lastInsertId();
+                return true;
             } else {
                 error_log("SQL execution failed: $sql with values: " . json_encode(array_values($data)));
                 return false;
             }
+            
         } catch (Exception $e) {
             // Log the exception
             error_log("Error in insertData: " . $e->getMessage());

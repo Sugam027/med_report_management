@@ -18,7 +18,7 @@
         <div class="col-md-4">
             <div class="profileCard">
                 <div class="profileCardImage">
-                    <img src="/uploads/profile_images/<?= $data['patients']['image'] ?>" alt="" width="100%">
+                    <img src="/uploads/profile_images/<?= $data['patients']['image'] ?>" alt="" width="100%" height="100%">
                 </div>
                 <div class="profileCardName"><?= $data['patients']['name'] ?></div>
                 <div class="profileCardAge">Age: <?= $data['patients']['age'] ?></div>
@@ -68,8 +68,12 @@
           </div>
           <div class="cardBody">
             
-            <div class="row cardInfo">
               
+            <div class="row cardInfo">
+                <div class="examination">
+                  <p class="examinationTitle">Diseases</p>
+                  <p class="examinationDetails"><?= htmlspecialchars($prescription['disease']); ?></p>
+                </div>
                 <div class="examination">
                   <p class="examinationTitle">Examination</p>
                   <p class="examinationDetails"><?= htmlspecialchars($prescription['examination_detail']); ?></p>
@@ -89,10 +93,9 @@
                   </ul>
                 </div>
             </div>
-            <form method="POST">
-            <input type="hidden" name="recordIndex" value="<?= $index ?>">
-            <button type="submit" name="expand" class="expand">Expand</button>
-            </form>
+            <div class="generate-pdf">
+                <button onclick="window.open('/generatepdf/generatePatientReport?app_id=<?= $prescription['appointment_id'] ?>', '_blank')">Generate PDF</button>
+            </div>
           </div>
         </div>
       <?php endif; ?>

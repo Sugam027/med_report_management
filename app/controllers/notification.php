@@ -9,13 +9,13 @@ class notification extends BaseController{
         
     }
     public function index() {
+        $this->auth_route->checkPermission([2,3]);
         $userId = $_SESSION['user_id'];
         $notifications= $this->notificationModel->getNotifications($userId);
 
         $data = [
             'notifications' => $notifications
         ];
-        print_r($data);
 
         $this->view('notification/index', $data);
     }

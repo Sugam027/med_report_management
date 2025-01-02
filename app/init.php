@@ -11,3 +11,6 @@ require_once 'core/Sql.php';
 require_once 'models/Departments.php'; 
 
 require_once 'helpers/Mailer.php';
+require_once 'helpers/PdfGenerator.php';
+require_once 'lib/dompdf/vendor/autoload.php';
+

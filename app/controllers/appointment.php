@@ -16,6 +16,7 @@ class appointment extends BaseController{
 
     
     public function index() {
+        $this->auth_route->checkPermission([1,2,3]);
         $userId = $_SESSION['user_id']; // Get the logged-in user's ID
         $userRoleId = $_SESSION['role_id'];
         
@@ -73,10 +74,10 @@ class appointment extends BaseController{
                     'department_id' => $_POST['department_id'],
                     'doctor_id'       => $_POST['doctor_id']
                 ];
+                print_r($appointmentData);
     
                 // Call model to insert appointment data
                 $result = $this->appointmentModel->createAppointment($appointmentData);
-                print_r($result);
                 if ($result) {
                     // $this->auth_route->setSessionMessage(true, 'Appointment created successfully. ');
                     $this->auth_route->setSessionMessage(true,'Appointment created successfully.');
@@ -93,6 +94,7 @@ class appointment extends BaseController{
         $this->view('appointment/create', $data);
     }
     public function updateStatus(){
+        $this->auth_route->checkPermission([1,2,3]);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Get the appointment ID and status from the form submission
             $appointmentId = $_POST['appointment_id'];
@@ -102,9 +104,9 @@ class appointment extends BaseController{
             $result = $this->appointmentModel->updateStatus($appointmentId, $status);
 
             if ($result) {
-                $_SESSION['success'] = "Appointment status updated successfully.";
+                $this->auth_route->setSessionMessage(true,"Appointment status updated successfully.");
             } else {
-                $_SESSION['error'] = "Failed to update appointment status.";
+                $this->auth_route->setSessionMessage(false,"Failed to update appointment status.");
             }
 
             // Redirect back to the appointments page
@@ -114,6 +116,7 @@ class appointment extends BaseController{
     }
 
     public function getDoctorsByDepartment($departmentId) {
+        $this->auth_route->checkPermission([1,2,3]);
         // Fetch doctors based on the department ID
         $doctors = $this->departmentModel->getDoctorByDepartment($departmentId);
     

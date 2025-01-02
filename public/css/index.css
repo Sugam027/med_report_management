@@ -19,9 +19,10 @@
     font-family: 'Poppins', sans-serif;
 
 }
-form .text-danger{
+.text-danger{
     font-size: 0.9rem;
     text-decoration: none;
+    color: #f00;
 }
 
 ul{
@@ -181,7 +182,7 @@ header .searchSetting .setting .headerProfile {
 }
 header .searchSetting .setting .headerProfile img {
     padding: 2px;
-    background-color: #adb5bd;
+    background-color: #c6c6c6;
     border: 2px solid #fff;
     border-radius: 50%;
     width: 100%;
@@ -296,7 +297,7 @@ header .searchSetting .setting .headerProfile img {
 .session-message {
     position: fixed;
     top: 20px;
-    left: 50%;
+    left: 40%;
     padding: 10px 20px;
     border-radius: 5px;
     font-size: 14px;

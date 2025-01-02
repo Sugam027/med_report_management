@@ -15,41 +15,73 @@ class Schedules{
     }
 
     // Insert user data into all three tables
-    public function updateSchedule($scheduleData) {
+    public function insertSchedule($scheduleData) {
         try {
-            // Insert into users table
             $this->db->beginTransaction();
-            // Insert into users table
-            $doctorId = $this->db->insertData('doctor_schedule', $scheduleData); 
-
-            if ($doctorId) {
-                // Create notification for doctor
+    
+            // Insert schedule into the doctor_schedule table
+            $result = $this->db->insertData('doctor_schedule', $scheduleData);
+            // print_r($result);
+            if ($result) {
+                // Create notification for the doctor
                 $doctorNotification = [
                     'user_id' => $scheduleData['user_id'],
-                    'message' => 'You have a new scheduled from tomorrow.',
+                    'message' => 'Your schedule has been updated.',
                 ];
                 $this->db->insertData('notifications', $doctorNotification);
     
-                // Commit transaction
                 $this->db->commit();
                 return true;
             } else {
-                // Rollback transaction on failure
-                $this->db->rollback();
+                $this->db->rollBack();
                 return false;
             }
-            
         } catch (Exception $e) {
-            // Roll back the transaction in case of an error
-            error_log("Scheduling failed: " . $e->getMessage()); // Log the error message
+            // $this->db->rollBack();
+            error_log("Error in updateSchedule: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function updateSchedule($scheduleData, $userId){
+        try {
+            $this->db->beginTransaction();
+            print_r($scheduleData);
+
+            $conditions = ['user_id' => $userId];
+            $updateData = $scheduleData;
+        unset($updateData['user_id']);
+
+    
+            // Insert schedule into the doctor_schedule table
+            $result = $this->db->updateData('doctor_schedule', $scheduleData, $conditions);
+            // print_r($result);
+            if ($result) {
+                // Create notification for the doctor
+                $doctorNotification = [
+                    'user_id' => $scheduleData['user_id'],
+                    'message' => 'Your schedule has been updated.',
+                ];
+                $this->db->insertData('notifications', $doctorNotification);
+    
+                $this->db->commit();
+                return true;
+            } else {
+                $this->db->rollBack();
+                return false;
+            }
+        } catch (Exception $e) {
+            // $this->db->rollBack();
+            error_log("Error in updateSchedule: " . $e->getMessage());
             return false;
         }
     }
     
+    
     public function getScheduleWithShifts($todayDay) {
         $table = 'doctor_schedule s';
         $conditions = []; // No specific conditions for the table
-        $fields = 's.doctor_name, sh.title AS shift, sh.start_time, sh.end_time, 
+        $fields = 's.user_id,s.doctor_name, sh.title AS shift, sh.start_time, sh.end_time, 
                    CASE WHEN FIND_IN_SET(4, s.'. strtolower($todayDay) .') THEN "Leave" ELSE "Active" END AS status';
         
         $joins = [
@@ -58,6 +90,26 @@ class Schedules{
         
         // Fetch the data
         return $this->db->getData($table, $conditions, $fields, $joins);
+    }
+
+    public function getScheduleById() {
+        
+        // $condition= ['user_id' => $userId];   
+        // $fields = 'user_id';
+
+        $result= $this->db->getData('doctor_schedule');
+        // print_r($result);
+        return $result;
+    }
+        
+    public function getDoctorSchedule($doctorId) {
+        
+        $conditions= ['user_id' => $doctorId];   
+
+        $result= $this->db->getSingleData('doctor_schedule', $conditions);
+        // print_r($result);
+        return $result;
+        
     }
     
 
