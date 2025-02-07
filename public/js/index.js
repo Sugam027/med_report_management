@@ -82,6 +82,90 @@ document.addEventListener("DOMContentLoaded", function () {
   initializePrescription();
 });
 
+
+// multiple test in add prescriptions
+document.addEventListener("DOMContentLoaded", function () {
+  const testContainer = document.getElementById("testContainer");
+  let testIndex = 0;
+
+  function createTestField(index) {
+    return `
+    <div class="test-row" data-index="${index}">
+      <div class="row" >
+        <div class="col-md-4 mb-2">
+          <label>Test Name ${index + 1}:</label>
+          <input type="text" class="form-control" name="test_name[]" data-index="${index}">
+        </div>
+        <div class="col-md-4 mb-2">
+          <label>Upload Test File:</label>
+          <input type="file" class="form-control" name="test_files[]" data-index="${index}">
+        </div>
+        
+      </div>
+      <div class="row">
+        <div class="col-md-8 mb-2">
+          <label>Test Result:</label>
+          <textarea class="form-control" name="test_result[]" data-index="${index}"></textarea>
+        </div>
+        <div class="mb-2 button-group">
+          <button type="button" class="btn btn-danger subTestBtn" style="display: none;">-</button>
+          <button type="button" class="btn btn-primary addTestBtn" style="display: none;">+</button>
+        </div>
+      </div>
+    </div>
+    `;
+  }
+
+  function initializeTest() {
+    const defaultTest = createTestField(testIndex);
+    testContainer.innerHTML = defaultTest;
+    updateTestButtonVisibility();
+    testIndex++;
+  }
+
+  function updateTestButtonVisibility() {
+    const rows = testContainer.querySelectorAll(".test-row");
+    rows.forEach((row, i) => {
+      const subButton = row.querySelector(".subTestBtn");
+      const addButton = row.querySelector(".addTestBtn");
+
+      addButton.style.display = i === rows.length - 1 ? "inline-block" : "none";
+      subButton.style.display = rows.length > 1 ? "inline-block" : "none";
+    });
+  }
+
+  function renumberTests() {
+    const rows = testContainer.querySelectorAll(".test-row");
+    rows.forEach((row, newIndex) => {
+      row.setAttribute("data-index", newIndex);
+      row.querySelector("label").textContent = `Test Name ${newIndex + 1}:`;
+      row.querySelector("input[name='test_name[]']").setAttribute("data-index", newIndex);
+      row.querySelector("textarea[name='test_result[]']").setAttribute("data-index", newIndex);
+      row.querySelector("input[name='test_file[]']").setAttribute("data-index", newIndex);
+    });
+  }
+
+  testContainer.addEventListener("click", function (e) {
+    if (e.target.classList.contains("addTestBtn")) {
+      const newTest = createTestField(testIndex);
+      testContainer.insertAdjacentHTML("beforeend", newTest);
+      testIndex++;
+      updateTestButtonVisibility();
+    }
+
+    if (e.target.classList.contains("subTestBtn")) {
+      const row = e.target.closest(".test-row");
+      testContainer.removeChild(row);
+      renumberTests();
+      testIndex--;
+      updateTestButtonVisibility();
+    }
+  });
+
+  initializeTest();
+});
+
+
 // JavaScript for filtering records
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -250,6 +334,72 @@ document.addEventListener('DOMContentLoaded', function() {
         submenu.classList.add('active'); // Mark parent nav-item as active
       }
     });
+  });
+});
+
+// toggle aside on click
+document.addEventListener('DOMContentLoaded', () => {
+  const navBtn = document.getElementById('nav-btn');
+  const sidebar = document.querySelector('aside');
+
+  navBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+  });
+  document.addEventListener('click', (event) => {
+    // Check if the click target is outside the sidebar and nav button
+    if (!sidebar.contains(event.target) && !navBtn.contains(event.target)) {
+        sidebar.classList.add('hidden');
+    }
+});
+});
+
+// filter the data
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('searchInput');
+  const table = document.querySelector('table');
+  const rows = table.querySelectorAll('tbody tr');
+  let timeout = null;
+
+  searchInput.addEventListener('input', () => {
+    clearTimeout(timeout); // Clear any existing timeout
+
+    timeout = setTimeout(() => {
+      const filter = searchInput.value.toLowerCase();
+      let sn = 1; // Reset SN counter
+
+      rows.forEach(row => {
+          const cells = row.querySelectorAll('td');
+          let match = false;
+
+          // Check if any cell contains the search term
+          cells.forEach(cell => {
+              if (cell.textContent.toLowerCase().includes(filter)) {
+                  match = true;
+              }
+          });
+
+          if (match) {
+              row.style.display = ''; // Show row
+              row.querySelector('.sn').textContent = sn++; // Update SN
+          } else {
+              row.style.display = 'none'; // Hide row
+          }
+      });
+    }, 300);
+  });
+});
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  var searchQuery = this.value.toLowerCase();
+  var records = document.querySelectorAll('.records'); // Select all record elements
+  
+  records.forEach(function(record) {
+    var recordText = record.textContent.toLowerCase(); // Get the text content of the record
+    if (recordText.indexOf(searchQuery) > -1) {
+      record.style.display = ''; // Show the record if it matches the search query
+    } else {
+      record.style.display = 'none'; // Hide the record if it does not match
+    }
   });
 });
 

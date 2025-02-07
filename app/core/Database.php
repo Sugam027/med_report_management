@@ -205,7 +205,7 @@ class Database {
                 );
             ",
 
-            'shift' => "
+            'shifts' => "
                 CREATE TABLE IF NOT EXISTS `shifts` (
                     `shift_id` INT AUTO_INCREMENT PRIMARY KEY,
                     `title` VARCHAR(50) NOT NULL,
@@ -229,9 +229,10 @@ class Database {
                 WHERE NOT EXISTS (SELECT 1 FROM `shifts`);
             ",
 
-            'doctor_schedule' => "
-                CREATE TABLE IF NOT EXISTS doctor_schedule (
-                    `user_id` BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+            'doctor_schedules' => "
+                CREATE TABLE IF NOT EXISTS doctor_schedules (
+                    `id` BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                    `user_id` BIGINT UNSIGNED NOT NULL,
                     `doctor_name` VARCHAR(255) NOT NULL,
                     `sunday` VARCHAR(255), 
                     `monday` VARCHAR(255), 
@@ -262,22 +263,45 @@ class Database {
                     `status` BOOLEAN DEFAULT FALSE,
                     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                    FOREIGN KEY (patient_id) REFERENCES users(`user_id`),
-                    FOREIGN KEY (doctor_id) REFERENCES users(`user_id`),
-                    FOREIGN KEY (department_id) REFERENCES departments(`id`)
+                    FOREIGN KEY (patient_id) REFERENCES users(`user_id`) ON DELETE CASCADE,
+                    FOREIGN KEY (doctor_id) REFERENCES users(`user_id`) ON DELETE CASCADE,
+                    FOREIGN KEY (department_id) REFERENCES departments(`id`) ON DELETE CASCADE
                 );
             ",
             'prescriptions' => "
                 CREATE TABLE IF NOT EXISTS prescriptions (
                     `prescription_id` INT AUTO_INCREMENT PRIMARY KEY,
                     `appointment_id` INT NOT NULL,
+                    `symptoms` TEXT,
+                    `blood_pressure` VARCHAR(50),
+                    `temperature` VARCHAR(50),
+                    `heart_rate` VARCHAR(50),
                     `examination_detail` TEXT,
                     `disease` VARCHAR(255),
+                    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id) ON DELETE CASCADE
+                );
+            ",
+            'prescription_medicines' => "
+                CREATE TABLE IF NOT EXISTS prescription_medicines (
+                    `id` INT AUTO_INCREMENT PRIMARY KEY,
+                    `prescription_id` INT NOT NULL,
                     `medicine_name` VARCHAR(255) NOT NULL,
                     `instructions` TEXT,
                     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                    FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id)
+                    FOREIGN KEY (prescription_id) REFERENCES prescriptions(prescription_id) ON DELETE CASCADE
+                );
+            ",
+            'test_results' => "
+                CREATE TABLE IF NOT EXISTS test_results (
+                    `id` INT AUTO_INCREMENT PRIMARY KEY,
+                    `prescription_id` INT NOT NULL,
+                    `test_name` VARCHAR(255),
+                    `test_result` TEXT,
+                    `test_file` VARCHAR(255),
+                    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (prescription_id) REFERENCES prescriptions(prescription_id) ON DELETE CASCADE
                 );
             ",
             'notifications' => "

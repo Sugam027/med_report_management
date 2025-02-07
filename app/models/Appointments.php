@@ -2,6 +2,7 @@
 // require_once __DIR__ . '/../core/Sql.php';
 class Appointments{
     private $db;
+    private $appointmentModel;
     public function __construct() {
         $this->db = new Sql();
         $this->auth_route = new AuthRoute();
@@ -57,12 +58,15 @@ class Appointments{
         return $this->db->getData($table, $conditions, $fields, $joins);
     }
 
+
     // Insert user data into all three tables
     public function createAppointment($appointmentData) {
         try {
             $this->db->beginTransaction();
             // Insert into users table
             $appointmentId = $this->db->insertData('appointments', $appointmentData); 
+            // print_r($appointmentId);
+            
 
             if ($appointmentId) {
                 // Create notification for doctor
@@ -71,11 +75,14 @@ class Appointments{
                     'message' => 'You have a new appointment scheduled with ' . $appointmentData['patient_name'] . ' on ' . $appointmentData['date'] . ' at ' . $appointmentData['time'] . '.',
                 ];
                 $this->db->insertData('notifications', $doctorNotification);
+
+                $doctorId = $appointmentData['doctor_id'];
+                $doctorData = $this->db->getSingleData('users', ['user_id' => $doctorId], 'name');
     
                 // Create notification for user (patient)
                 $userNotification = [
                     'user_id' => $appointmentData['patient_id'],
-                    'message' => 'Your appointment has been scheduled with Dr. ' . $appointmentData['doctor_id'] . ' on ' . $appointmentData['date'] . ' at ' . $appointmentData['time'] . '.',
+                    'message' => 'Your appointment has been scheduled with Dr. ' . $doctorData['name']. ' on ' . $appointmentData['date'] . ' at ' . $appointmentData['time'] . '.',
                 ];
                 $this->db->insertData('notifications', $userNotification);
     
@@ -107,6 +114,11 @@ class Appointments{
             error_log("Appointment schedule failed: " . $e->getMessage()); // Log the error message
             return false;
         }
+    }
+
+    public function total_appointments(){
+        $data =  $this->db->getSingleData('appointments', [], 'COUNT(*) AS total_users');
+        return $data;
     }
     
     

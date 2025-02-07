@@ -5,7 +5,35 @@
     <div class="heading">
         <p class="headingName">Doctor List</p>
     </div>
-    <div class="tableContainer">
+    <div class="backgroundContainer">
+      <div class="cardList">
+        <?php foreach ($data['doctors'] as $doctor): ?>
+          <div class="card" key={index}>
+            <div class="row">
+              <div class="cardLeft">
+                <div class="image mb-2">
+                <img class="pimage" src="/uploads/profile_images/<?= htmlspecialchars($doctor['image']); ?>" alt="doctor_image" width="100%">
+                </div>
+                <div class="cardId">
+                  <p>DID <?= htmlspecialchars($doctor['user_id']); ?></p>
+                </div>
+              </div>
+              <div class="cardRight">
+                <p class="cardName mb-2"><?= htmlspecialchars($doctor['full_name']); ?></p>
+                <p class="department mb-2"><?= htmlspecialchars($doctor['department_name']); ?></p>
+                <p class="phone mb-2"><?= htmlspecialchars($doctor['phone']); ?></p>
+                <p class="email mb-2"><?= htmlspecialchars($doctor['email']); ?></p>
+              </div>
+            </div>
+            <div class="viewProfile">
+              <p onclick="window.location.href='/user/profile?user_id=<?= $doctor['user_id'] ?>'">View Profile</p>
+            </div>
+          </div>
+        <?php endforeach; ?>
+  
+      </div>
+    </div>
+    <!-- <div class="tableContainer">
       <?php if (!empty($data['doctors'])): ?>
         <table class="table">
           <thead>
@@ -43,8 +71,7 @@
         <?php else: ?>
           <p>No doctors found.</p>
       <?php endif; ?>
-    </div>
-
+    </div> -->
 
 </main>
 <?php require_once '../app/views/templates/footer.php'; ?>

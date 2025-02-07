@@ -61,20 +61,57 @@ class Users{
             $this->db->beginTransaction();
             // Insert into users table
             $userId = $this->db->insertData('users', $userData); // Store the ID from the insert
-    
+            echo "User ID: $userId";
             // Insert into user_details table
             $userDetailsData['user_id'] = $userId;
             $this->db->insertData('user_details', $userDetailsData);
-    
+
             // If doctor details are provided, insert into doctor_details table
             if ($doctorDetailsData) {
                 $doctorDetailsData['user_id'] = $userId;
                 $this->db->insertData('doctor_details', $doctorDetailsData);
+                print_r($doctorDetailsData);
+
             }
     
             // Commit transaction
             $this->db->commit();
-            return $userId;
+            if($userId){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (Exception $e) {
+            // Roll back the transaction in case of an error
+            $this->db->rollBack();
+            error_log("Registration failed: " . $e->getMessage()); // Log the error message
+            return false;
+        }
+    }
+    public function edit($userId, $userData, $userDetailsData, $doctorDetailsData = null) {
+        try {
+            $condition = ['user_id' => $userId];
+            // Start transaction
+            $this->db->beginTransaction();
+            // Insert into users table
+            $userId = $this->db->updateData('users', $userData, $condition); // Store the ID from the insert
+            // Insert into user_details table
+            $this->db->updateData('user_details', $userDetailsData, $condition);
+
+            // If doctor details are provided, insert into doctor_details table
+            if ($doctorDetailsData) {
+                $this->db->updateData('doctor_details', $doctorDetailsData, $condition);
+                print_r($doctorDetailsData);
+
+            }
+    
+            // Commit transaction
+            $this->db->commit();
+            if($userId){
+                return true;
+            }else{
+                return false;
+            }
         } catch (Exception $e) {
             // Roll back the transaction in case of an error
             $this->db->rollBack();
@@ -135,13 +172,59 @@ class Users{
     public function getUserById($userId){
         $table = 'users u';
         $conditions =['u.user_id' => $userId];
-        $fields = 'u.*, ud.*, dd.*';
-        $joins = ['user_details ud' => 'ud.user_id = u.user_id', 'doctor_details dd' => 'dd.user_id = u.user_id'];
+        $fields = '
+            u.user_id, 
+            u.name, 
+            u.username, 
+            u.password, 
+            u.email, 
+            u.phone, 
+            u.image, 
+            u.role_id, 
+            u.is_active, 
+            ud.full_name, 
+            ud.dob, 
+            ud.age, 
+            ud.gender, 
+            ud.blood_group, 
+            ud.father_name, 
+            ud.mother_name, 
+            ud.permanent_address, 
+            ud.temporary_address, 
+            dd.department_id, 
+            dd.license_number, 
+            dd.experience_years,
+            d.name AS department_name';
+        $joins = ['user_details ud' => 'ud.user_id = u.user_id', 'doctor_details dd' => 'dd.user_id = u.user_id', 'departments d' => 'd.id = dd.department_id'];
 
         $data= $this->db->getSingleData($table, $conditions, $fields, $joins);
         // print_r($data);
         return $data;
         
+    }
+
+    public function getDoctorDetails(){
+        $table = 'users u';
+        $conditions =['u.role_id' => 2];
+        $fields = 'u.*, ud.*, dd.*, d.name AS department_name';
+        $joins = ['user_details ud' => 'ud.user_id = u.user_id', 'doctor_details dd' => 'dd.user_id = u.user_id', 'departments d' => 'd.id = dd.department_id'];
+
+        $data= $this->db->getData($table, $conditions, $fields, $joins);
+        return $data;
+        
+    }
+
+    public function total_users(){
+        $data =  $this->db->getSingleData('users', [], 'COUNT(*) AS total_users');
+        return $data;
+    }
+    public function total_doctors(){
+        $data =  $this->db->getSingleData('users', ['role_id' => 2], 'COUNT(*) AS total_users');
+        return $data;
+    }
+    public function total_patients(){
+        $data =  $this->db->getSingleData('users', ['role_id' => 3], 'COUNT(*) AS total_users');
+        return $data;
     }
 
 

@@ -3,15 +3,29 @@
 class dashboard extends BaseController{
 
     private $userModel;
+    private $appointmentModel;
     public function __construct() {
         parent::__construct();
         $this->userModel = $this->model('Users');
+        $this->appointmentModel = $this->model('Appointments');
 
         
     }
     public function index() {
         $this->auth_route->checkPermission([1,2,3]);
-        $this->view('dashboard/index');
+        $totalUsers = $this->userModel->total_users();
+        $totalDoctors = $this->userModel->total_doctors();
+        $totalPatients = $this->userModel->total_patients();
+        $totalAppointments = $this->appointmentModel->total_appointments();
+        // print_r($totalUsers);
+        $data = [
+            'totalUsers' => $totalUsers,
+            'totalDoctors' => $totalDoctors,
+            'totalPatients' => $totalPatients,
+            'totalAppointments' => $totalAppointments,
+        ];
+
+        $this->view('dashboard/index', $data);
     }
     public function changepassword() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

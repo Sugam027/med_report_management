@@ -2,13 +2,12 @@
     color: #f00;
 }
 .background {
-    height: 100vh;
+    height: 100dvh;
     background: linear-gradient(var(--body-bg), var(--aside-bg));
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    overflow-y: auto;
 }
 .background .mainComponent {
     width: 70%;
@@ -66,7 +65,6 @@
     background-color: var(--main-bg);
     padding: 5rem 2rem;
     color: #747676;
-    overflow-y: auto;
 }
 .background .mainComponent .loginSide p {
     margin: 0;
@@ -149,4 +147,46 @@
 }
 .background .change-password-form form .btn:hover {
     opacity: 0.8;
+}
+
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+    .background .mainComponent {
+        width: 85%;
+    }
+    .background .mainComponent .col-md-6 .info {
+        padding: 1.5rem 0.7rem;
+    }
+    .background .mainComponent .col-md-6 .info .logo {
+        width: 65%;
+    }
+    .background .mainComponent .col-md-6 .info .slogon {
+        font-size: 1.8rem;
+    }
+    
+}
+@media screen and (max-width: 767px) {
+    .background .mainComponent {
+        width: 85%;
+        height: unset;
+        flex-direction: column;
+    }
+    .background .mainComponent .infoSide {
+        height: 150px;
+    }
+    .background .mainComponent .col-md-6 {
+        width: 100%;
+    }
+    .background .mainComponent .col-md-6 .info {
+        padding: 1.5rem 0.7rem;
+    }
+    .background .mainComponent .col-md-6 .info .logo {
+        width: 65%;
+    }
+    .background .mainComponent .col-md-6 .info .slogon {
+        font-size: 1.1rem;
+    }
+    .background .mainComponent .col-md-6 .info .description {
+        display: none;
+    }
+    
 }

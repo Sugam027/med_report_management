@@ -17,14 +17,16 @@ class schedule extends BaseController{
         // Get today's date and day
         $todayDate = date('Y-m-d'); // This gives the date in format YYYY-MM-DD
         $todayDay = date('l'); // This gives the full textual day, e.g., "Monday"
+        $todayTime = date('H:i'); 
     
         // Fetch the schedule data
-        $scheduleData = $this->scheduleModel->getScheduleWithShifts($todayDay); // Pass the current day to filter data
+        $scheduleData = $this->scheduleModel->getScheduleWithShifts($todayDay, $todayTime); // Pass the current day to filter data
     
         $data = [
             'scheduleData' => $scheduleData,
             'todayDate' => $todayDate,
             'todayDay' => $todayDay,
+            'todayTime' => $todayTime,
         ];
     
         // Pass the data to the view
@@ -155,7 +157,7 @@ class schedule extends BaseController{
                 }
             }
 
-            print_r($scheduleData);
+            // print_r($scheduleData);
     
             // Check if a schedule already exists for the doctor (for update)
             $existSchedules = $this->scheduleModel->getDoctorSchedule($userId);

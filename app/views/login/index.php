@@ -5,13 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Medilog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['base_url']; ?>css/index.css">
     <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['base_url']; ?>css/login.css">
 </head>
 <body>
     <div class="background">
         <div class="mainComponent">
-            <div class="col-md-6">
+            <div class="col-md-6 infoSide">
                 <div class="backgroundImage">
                     <img src="<?php echo $GLOBALS['base_url']; ?>images/poster.png" alt="">
                 </div>

@@ -20,8 +20,7 @@ class Schedules{
             $this->db->beginTransaction();
     
             // Insert schedule into the doctor_schedule table
-            $result = $this->db->insertData('doctor_schedule', $scheduleData);
-            // print_r($result);
+            $result = $this->db->insertData('doctor_schedules', $scheduleData);
             if ($result) {
                 // Create notification for the doctor
                 $doctorNotification = [
@@ -46,7 +45,6 @@ class Schedules{
     public function updateSchedule($scheduleData, $userId){
         try {
             $this->db->beginTransaction();
-            print_r($scheduleData);
 
             $conditions = ['user_id' => $userId];
             $updateData = $scheduleData;
@@ -54,7 +52,7 @@ class Schedules{
 
     
             // Insert schedule into the doctor_schedule table
-            $result = $this->db->updateData('doctor_schedule', $scheduleData, $conditions);
+            $result = $this->db->updateData('doctor_schedules', $scheduleData, $conditions);
             // print_r($result);
             if ($result) {
                 // Create notification for the doctor
@@ -78,18 +76,28 @@ class Schedules{
     }
     
     
-    public function getScheduleWithShifts($todayDay) {
-        $table = 'doctor_schedule s';
+    public function getScheduleWithShifts($todayDay, $todayTime) {
+        $table = 'doctor_schedules s';
         $conditions = []; // No specific conditions for the table
-        $fields = 's.user_id,s.doctor_name, sh.title AS shift, sh.start_time, sh.end_time, 
-                   CASE WHEN FIND_IN_SET(4, s.'. strtolower($todayDay) .') THEN "Leave" ELSE "Active" END AS status';
-        
+        $fields = 's.user_id, 
+                s.doctor_name, 
+                GROUP_CONCAT(sh.title ORDER BY sh.start_time) AS shifts,
+                GROUP_CONCAT(sh.start_time ORDER BY sh.start_time) AS start_time,
+                GROUP_CONCAT(sh.end_time ORDER BY sh.start_time) AS end_time, 
+                CASE 
+                    WHEN MAX(CASE WHEN FIND_IN_SET(sh.shift_id, s.' . strtolower($todayDay) . ') 
+                                AND "' . $todayTime . '" BETWEEN sh.start_time AND sh.end_time THEN 1 ELSE 0 END) = 1 
+                    THEN "Available"
+                    ELSE "Leave"
+                END AS status';
+    
         $joins = [
-            'shifts sh' => 'FIND_IN_SET(sh.shift_id, s.' . strtolower($todayDay) . ')', 
+            'shifts sh' => 'FIND_IN_SET(sh.shift_id, s.' . strtolower($todayDay) . ')',
         ];
+        $groupBy = 's.user_id, s.doctor_name';
+        $orderBy = 's.doctor_name';
         
-        // Fetch the data
-        return $this->db->getData($table, $conditions, $fields, $joins);
+        return $this->db->getData($table, $conditions, $fields, $joins, $groupBy, $orderBy);
     }
 
     public function getScheduleById() {
@@ -97,7 +105,7 @@ class Schedules{
         // $condition= ['user_id' => $userId];   
         // $fields = 'user_id';
 
-        $result= $this->db->getData('doctor_schedule');
+        $result= $this->db->getData('doctor_schedules');
         // print_r($result);
         return $result;
     }
@@ -106,7 +114,7 @@ class Schedules{
         
         $conditions= ['user_id' => $doctorId];   
 
-        $result= $this->db->getSingleData('doctor_schedule', $conditions);
+        $result= $this->db->getSingleData('doctor_schedules', $conditions);
         // print_r($result);
         return $result;
         

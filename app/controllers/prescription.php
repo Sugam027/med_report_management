@@ -27,13 +27,10 @@ class prescription extends BaseController{
         } elseif($userRoleId === 2) {
             // Doctor: Fetch only appointments assigned to them
             $patients = $this->userModel->getPatientsByDoctorId($userId);
-            // $prescriptions = $this->prescriptionModel->getAppointmentsByDoctor($userId);
         } else{
             
             $prescriptions = $this->prescriptionModel->getPrescriptionByUser($userId);
         }
-        
-        // print_r($prescriptions);
         
         $data = [
             'prescriptions' => $prescriptions,
@@ -45,6 +42,7 @@ class prescription extends BaseController{
    
     public function add($appointmentId = null) {
         $this->auth_route->checkPermission([1,2]);
+    
         // Validate appointment ID
         if (empty($appointmentId) || !is_numeric($appointmentId)) {
             header('Location: /appointment');
@@ -54,43 +52,121 @@ class prescription extends BaseController{
         // Fetch the appointment details
         $appointment = $this->appointmentModel->getAppointmentById($appointmentId);
     
-        // Check if appointment data exists and if it is an array with data
         if (!$appointment || !isset($appointment[0])) {
-            // If no appointment found, redirect to the appointment page or handle error
             header('Location: /appointment');
             exit;
         }
     
-        // Unwrap the array and pass the appointment data to the view
-        $appointment = $appointment[0]; // Access the first element of the array
-        $data =[
-            'appointment' => $appointment
-        ];
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $appointmentId = $_POST['appointment_id'];
-            $disease = $_POST['disease'];
-            $examinationDetail = $_POST['examination_detail'];
-            $medicines = $_POST['medicines'];
-            $instructions = $_POST['instructions'];
+        $appointment = $appointment[0]; // Access the first element
+        $data = ['appointment' => $appointment];
     
-            foreach ($medicines as $index => $medicine) {
-                if (!empty($medicine)) {
-                    $prescriptionData = [
-                        // 'prescription_id' => $prescriptionId,
-                        'appointment_id' => $appointmentId,
-                        'disease' => $disease,
-                        'examination_detail' => $examinationDetail,
-                        'medicine_name' => $medicine,
-                        'instructions' => $instructions[$index]
-                    ];
-                    $this->prescriptionModel->add($prescriptionData);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Extract data from the form
+            $appointmentId = $_POST['appointment_id'];
+            $symptoms = $_POST['symptoms'];
+            $bloodPressure = $_POST['blood_pressure'];
+            $temperature = $_POST['temperature'];
+            $heartRate = $_POST['heart_rate'];
+            $examinationDetail = $_POST['examination_detail'];
+            $disease = $_POST['disease'];
+            $followUpDate = $_POST['follow_up_date'];
+            $followUpTime = $_POST['follow_up_time'];
+    
+            // Start Transaction
+    
+            try {
+                // **1. Insert into `prescriptions` table**
+                $prescriptionData = [
+                    'appointment_id' => $appointmentId,
+                    'symptoms' => $symptoms,
+                    'blood_pressure' => $bloodPressure,
+                    'temperature' => $temperature,
+                    'heart_rate' => $heartRate,
+                    'examination_detail' => $examinationDetail,
+                    'disease' => $disease
+                ];
+    
+                // **2. Insert Medicines into `prescription_medicines`**
+                if (!empty($_POST['medicines'])) {
+                    $medicineData = []; // Initialize array
+                    foreach ($_POST['medicines'] as $index => $medicine) {
+                        if (!empty($medicine)) {
+                            $medicineData[] = [
+                                'medicine_name' => $medicine,
+                                'instructions' => $_POST['instructions'][$index] ?? ''
+                            ];
+                        }
+                    }
                 }
+                
+                if (!empty($_POST['test_name'])) {
+                    $testData = []; // Initialize array
+                    foreach ($_POST['test_name'] as $index => $testName) {
+                        if (!empty($testName)) {
+                            $testFile = !empty($_FILES['test_files']['name'][$index]) ? $this->uploadFile($_FILES['test_files'], $index) : null;
+                
+                            $testData[] = [
+                                'test_name' => $testName,
+                                'test_result' => $_POST['test_result'][$index] ?? '',
+                                'test_file' => $testFile
+                            ];
+                        }
+                    }
+                }
+                
+
+                if(!empty($followUpDate)){
+                    $appointmentData = [
+                        'date' => $followUpDate,
+                        'time' => $followUpTime,
+                        'patient_id' => $appointment['patient_id'],
+                        'patient_name' => $appointment['patient_name'],
+                        'phone' => $appointment['phone'],
+                        'symptoms' => $symptoms,
+                        'department_id' => $appointment['department_id'],
+                        'doctor_id' => $appointment['doctor_id']
+                    ];
+                }
+                try {
+                     $result = $this->prescriptionModel->add($prescriptionData, $medicineData, $testData, $appointmentData);
+                    if ($result) {
+                        $this->auth_route->setSessionMessage(true, 'Prescription added successfully.');
+                    } else {
+                        $this->auth_route->setSessionMessage(false, 'Prescription addition failed. Please try again.');
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $this->auth_route->setSessionMessage(false, 'Prescription addition  failed. Please try again.');
+                }
+                $this->auth_route->redirect('appointment');
+                exit;
+            } catch (Exception $e) {
+                $this->prescriptionModel->rollback();
+                die("Error: " . $e->getMessage());
             }
         }
-        $this->view('prescription/add', $data);
     
+        $this->view('prescription/add', $data);
     }
+    
+    /**
+     * Handle file uploads
+     */
+    private function uploadFile($files, $index) {
+        $uploadDir = 'uploads/test_results/';
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+    
+        $fileName = basename($files['name'][$index]);
+        $targetFilePath = $uploadDir . $fileName;
+    
+        if (move_uploaded_file($files['tmp_name'][$index], $targetFilePath)) {
+            return $fileName;
+        }
+        return null;
+    }
+    
     
     public function viewPatient($patientId = null){
         if (empty($patientId) || !is_numeric($patientId)) {
@@ -112,7 +188,6 @@ class prescription extends BaseController{
         } else{
             $prescriptions = $this->prescriptionModel->getPrescriptionByUser($userId);
         }
-        // print_r($prescriptions);
 
         $data=[
             'patients' => $patients,

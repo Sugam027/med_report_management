@@ -19,6 +19,7 @@ class GeneratePdf extends BaseController
     {
         $appointmentId = $_GET['app_id'];
         $prescriptions = $this->prescriptionModel->getPrescriptionByAppointmentId($appointmentId);
+        // $prescriptions = $this->prescriptionModel->getPrescriptionByUser($userId);
         // Fetch data (replace with actual data fetching logic)
         $data =[
             'prescriptions' => $prescriptions
@@ -219,6 +220,29 @@ class GeneratePdf extends BaseController
                                     </table>
                                 </div>
                                     <div class="examinationDetail">
+                                        <p class="title">Symptoms</p>
+                                    <p><?= htmlspecialchars($prescription['symptoms']); ?> </p>
+                                    </div>
+                                    <div class="diagnosisDetail">
+                                    <table>
+                                        <tr>
+                                            <td style="width: 32%;">
+                                                <p><strong>Blood Pressure</strong></p>
+                                                <p><?= htmlspecialchars($prescription['blood_pressure']); ?> mmHG</p>
+                                            </td>
+                                            <td style="width: 32%;">
+                                                <p><strong>Temperature</strong></p>
+                                                <p><?= htmlspecialchars($prescription['temperature']); ?> &deg;F</p>
+                                            </td>
+                                            <td style="width: 32%;">
+                                                <p><strong>Heart Rate</strong></p>
+                                                <p><?= htmlspecialchars($prescription['heart_rate']); ?> bpm</p>
+                                            </td>
+                                           
+                                        </tr>
+                                    </table>
+                                </div>
+                                    <div class="examinationDetail">
                                         <p class="title">Disease</p>
                                     <p><?= htmlspecialchars($prescription['disease']); ?> </p>
                                     </div>
@@ -236,11 +260,19 @@ class GeneratePdf extends BaseController
                                             </table>
                                             
                                         <?php endif; ?>
+                                        
                                         <table>
+                                        <?php 
+                                                $medicines = explode(', ', $prescription['medicine_names']); 
+                                                $instructions = explode(', ', $prescription['medicine_instructions']);
+
+                                                for ($i = 0; $i < count($medicines); $i++): 
+                                            ?>
                                             <tr>
-                                                <td width="30%"><p><?= htmlspecialchars($prescription['medicine_name']); ?></p></td>
-                                                <td width="65%"><p><?= htmlspecialchars($prescription['instructions']); ?></p></td>
+                                                <td width="30%"><p><?= htmlspecialchars($medicines[$i]); ?></p></td>
+                                                <td width="65%"><p><?=htmlspecialchars($instructions[$i] ?? ''); ?></p></td>
                                             </tr>
+                                            <?php endfor; ?>
                                         </table>
                                         <?php 
                                             // Check if the next item has a different appointment_id or if it is the last item
@@ -262,6 +294,6 @@ class GeneratePdf extends BaseController
         $fileName = 'patient_report_' . $appointmentId . '.pdf';
 
         // Generate the PDF and download it
-        PdfGenerator::generate($htmlContent, $fileName);
+        PdfGenerator::generate($htmlContent, $fileName, );
     }
 }

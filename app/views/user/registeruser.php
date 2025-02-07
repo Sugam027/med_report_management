@@ -314,6 +314,7 @@
 
     form.addEventListener('submit', function (event) {
       let isValid = true;
+      
 
       // Clear all previous error messages
       const errorElements = document.querySelectorAll('.error-message');
@@ -433,8 +434,10 @@
      // Prevent form submission if validation fails
      if (!isValid) {
       event.preventDefault(); // Prevent submission
+      console.log("hello")
     } else {
       // Allow form submission only if valid
+      console.log("hello1")
       form.submit();
     }
   });

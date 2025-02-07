@@ -22,7 +22,8 @@ class Sql extends Database
             error_log("Executing SQL: $sql with values: " . json_encode(array_values($data)));
 
             if ($this->execute()) {
-                return true;
+                $lastId = $this->lastInsertId();
+                return $lastId;
             } else {
                 error_log("SQL execution failed: $sql with values: " . json_encode(array_values($data)));
                 return false;

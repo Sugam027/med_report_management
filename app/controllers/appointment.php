@@ -19,6 +19,13 @@ class appointment extends BaseController{
         $this->auth_route->checkPermission([1,2,3]);
         $userId = $_SESSION['user_id']; // Get the logged-in user's ID
         $userRoleId = $_SESSION['role_id'];
+        $today = date('Y-m-d');
+        $pastAppointments = [];
+        $todaysAppointments = [];
+        $upcomingAppointments = [];
+
+        
+
         
         // Fetch appointments based on role
         if ($userRoleId === 1) {
@@ -30,10 +37,26 @@ class appointment extends BaseController{
         } else{
             $appointments = $this->appointmentModel->getAppointmentsByUser($userId);
         }
+
+        foreach ($appointments as $appointment) {
+            // Convert appointment date to 'Y-m-d'
+            $appointmentDate = date('Y-m-d', strtotime($appointment['date']));
+            
+            if ($appointmentDate === $today) {
+                $todaysAppointments[] = $appointment;
+            } else {
+                $otherAppointments[] = $appointment;
+            }
+        }
+
         
         $data = [
-            'appointments' => $appointments
+            'appointments' => $appointments,
+            'todaysAppointments' => $todaysAppointments,
+            'otherAppointments' => $otherAppointments
         ];
+
+        // print_r($data['pastAppointments']);
         
     
         // Load the view with the data
@@ -74,7 +97,7 @@ class appointment extends BaseController{
                     'department_id' => $_POST['department_id'],
                     'doctor_id'       => $_POST['doctor_id']
                 ];
-                print_r($appointmentData);
+                // print_r($appointmentData);
     
                 // Call model to insert appointment data
                 $result = $this->appointmentModel->createAppointment($appointmentData);

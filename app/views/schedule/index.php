@@ -4,14 +4,14 @@
 <main>
   <div class="heading titleHead">
     <p class="headingName">Doctor timing</p>
-    <!-- <div class="searchBar">
-      <img src="../images/search.png" alt="">
-      <input type="search" class="form-control" placeholder="Search" />
-    </div> -->
+    <div class="searchBar">
+      <input type="search" class="searchInput" id="searchInput" placeholder="Search" />
+    </div>
     <div class="button-group">
     <a href="/schedule/manage_schedule"><p class="btn">Manage Schedule</p></a>
     </div>
   </div>
+  
   <!-- <div class="container"> -->
     <div class="tableContainer">
       <?php if (!empty($data['scheduleData'])): ?>
@@ -20,7 +20,7 @@
             <tr>
               <th>S.N</th>
               <th>Name</th>
-              <th>Shift</th>
+              <th>Shifts</th>
               <th>Start time</th>
               <th>End time</th>
               <th>Status</th>
@@ -32,10 +32,10 @@
           <tbody></tbody>
           <?php $index = 1; ?>
           <?php foreach ($data['scheduleData'] as $sData): ?>
-            <tr>
-                <td><?= $index++ ?></td>
+            <tr key={index}>
+                <td class="sn"><?= $index++ ?></td>
                 <td><?= htmlspecialchars($sData['doctor_name']); ?></td>
-                <td><?= htmlspecialchars($sData['shift']); ?></td>
+                <td><?= htmlspecialchars($sData['shifts']); ?></td>
                 <td><?= htmlspecialchars($sData['start_time']); ?></td>
                 <td><?= htmlspecialchars($sData['end_time']); ?></td>
                 <td><?= htmlspecialchars($sData['status']); ?></td>
