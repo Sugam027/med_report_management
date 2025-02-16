@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const shiftCheckboxes = document.querySelectorAll(".shift-checkbox");
     const shiftMap = { "1": "morning", "2": "evening", "3": "night", "4": "leave" };
 
+
     // Function to fetch and populate shift data
     function fetchAndPopulateSchedule(doctorId) {
         if (!doctorId) return;
@@ -70,16 +71,13 @@ document.addEventListener("DOMContentLoaded", function () {
         // Clear all checkboxes
         shiftCheckboxes.forEach(checkbox => (checkbox.checked = false));
 
-        // Show loading spinner
-        document.body.classList.add('loading');
-
         // Fetch schedule data
         fetch('/schedule/getDoctorSchedule/' + doctorId)
             .then(response => response.json())
             .then(data => {
                 if (data && data.user_id == doctorId) {
                     for (const day in data) {
-                        if (day !== 'user_id' && day !== 'doctor_name' && day !== 'created_at' && day !== 'updated_at') {
+                        if (day !== 'id' && day !== 'user_id' && day !== 'doctor_name' && day !== 'created_at' && day !== 'updated_at') {
                             const shiftIds = data[day].split(',');
                             shiftIds.forEach(shiftId => {
                                 const shiftType = shiftMap[shiftId.trim()];
@@ -102,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Event listener for dropdown change
     doctorSelect.addEventListener("change", function () {
         const doctorId = this.value;
+        // console.log(doctorId);
         fetchAndPopulateSchedule(doctorId);
     });
 

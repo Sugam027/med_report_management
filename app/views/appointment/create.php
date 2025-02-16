@@ -108,6 +108,8 @@
           <button class="btn btnSubmit">
             Create
           </button>
+          <div class="loader" id="loader" style="display: none"></div>
+
         </div>
       </form>
     </div>
@@ -118,6 +120,7 @@
   function onDepartmentChange() {
     // Get selected department ID
     var departmentId = document.querySelector("select[name='department_id']").value;
+    const loader = document.getElementById('loader');
 
     // Check if a department is selected
     if (departmentId) {
@@ -178,7 +181,6 @@
       const patientName = document.querySelector("input[name='patient_name']");
       const age = document.querySelector("input[name='age']");
       const phone = document.querySelector("input[name='phone']");
-      const symptoms = document.querySelector("textarea[name='symptoms']");
       const department = document.getElementById("department-select");
       const doctor = document.getElementById("doctor-select");
 
@@ -208,11 +210,6 @@
       isValid = false;
     }
 
-    if (!symptoms.value.trim()) {
-      showError(symptoms, "Symptoms field cannot be empty.");
-      isValid = false;
-    }
-
     if (!department.value) {
       showError(department, "Please select a department.");
       isValid = false;
@@ -227,10 +224,12 @@
      if (!isValid) {
       event.preventDefault(); // Prevent submission
     } else {
+      loader.style.display = 'block';
       // Allow form submission only if valid
       form.submit();
     }
   });
+
 });
 
 </script>

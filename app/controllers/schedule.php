@@ -14,13 +14,20 @@ class schedule extends BaseController{
         $this->scheduleModel = $this->model('Schedules');
     }
     public function index() {
+        date_default_timezone_set('Asia/Kathmandu'); 
         // Get today's date and day
         $todayDate = date('Y-m-d'); // This gives the date in format YYYY-MM-DD
         $todayDay = date('l'); // This gives the full textual day, e.g., "Monday"
-        $todayTime = date('H:i'); 
+        $todayTime = date('H:i:s'); 
     
         // Fetch the schedule data
         $scheduleData = $this->scheduleModel->getScheduleWithShifts($todayDay, $todayTime); // Pass the current day to filter data
+        $userRoleId = $_SESSION['role_id'];
+        $userId = $_SESSION['user_id'];
+        if($userRoleId == 2){
+        $scheduleData = $this->scheduleModel->getScheduleById($userId); 
+
+        }
     
         $data = [
             'scheduleData' => $scheduleData,
@@ -28,7 +35,6 @@ class schedule extends BaseController{
             'todayDay' => $todayDay,
             'todayTime' => $todayTime,
         ];
-    
         // Pass the data to the view
         $this->view('schedule/index', $data);
     }

@@ -120,6 +120,23 @@ class Appointments{
         $data =  $this->db->getSingleData('appointments', [], 'COUNT(*) AS total_users');
         return $data;
     }
+
+    public function totalPreviousAppointments(){
+        $userId = $_SESSION['user_id'];
+        $today = date('Y-m-d');
+        $condition = ['patient_id' => $userId];
+        $appointments = $this->db->getData('appointments', $condition, 'date');
+
+        $pastAppointments = [];
+        foreach ($appointments as $appointment) {
+            if ($appointment['date'] < $today) {
+                $pastAppointments[] = $appointment;
+            }
+        }
+        $totalPastAppointments = count($pastAppointments);
+        return $totalPastAppointments;
+
+    }
     
     
     

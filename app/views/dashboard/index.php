@@ -26,6 +26,18 @@
       </div>
     </div>
     <?php endif; ?>
+    <?php if(SESSION::get('role_id') == 3): ?>
+    <div class="row">
+      <div class="list">
+        <p class="title">Total Visits</p>
+        <p><?= $data['totalVisited'] ?></p>
+      </div>
+      <div class="list">
+        <p class="title">Total Doctors</p>
+        <p><?= $data['totalDoctors']['total_users'] ?></p>
+      </div>
+    </div>
+    <?php endif; ?>
   </div>
 
 </main>

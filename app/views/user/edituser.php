@@ -144,6 +144,8 @@
 
         <div class="button-group">
           <button type="submit" class="btn btnSubmit">Update</button>
+          <div class="loader" id="loader" style="display: none"></div>
+
         </div>
       </form>
     </div>
@@ -153,6 +155,8 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('edit-form');
+    const loader = document.getElementById('loader');
+
 
     form.addEventListener('submit', function (event) {
       let isValid = true;
@@ -178,6 +182,7 @@
       }
 
       if (!isValid) event.preventDefault();
+      loader.style.display = 'block';
     });
   });
 </script>

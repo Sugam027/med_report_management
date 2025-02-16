@@ -212,64 +212,6 @@
           </div>
         </div>
         <p class="title">Address Details</p>
-        <!-- <div class="row mb-2">
-          <div class="form-group">
-            <label>Province</label>
-            <select
-              defaultValue=""
-              name="perProvince"
-              class="form-control">
-              <option value="" disabled>
-                -- Select Province --
-              </option>
-              
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>District</label>
-            <select
-              defaultValue=""
-              name="perDistrict"
-              class="form-control">
-              <option value="" disabled>
-                -- Select District --
-              </option>
-              
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Municipality</label>
-
-            <select
-              defaultValue=""
-              name="perMunicipality"
-              class="form-control">
-              <option value="" disabled>
-                -- Select Municipality --
-              </option>
-              
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Ward No: </label>
-            
-            <input
-              type="number"
-              name="perWard"
-              class="form-control"
-            >
-          </div>
-          <div class="form-group">
-            <label>Tole: </label>
-            
-            <input
-              type="text"
-              name="perTole"
-              class="form-control"
-            >
-          </div>
-        </div> -->
         <div class="row mb-2">
           <div class="form-group">
           <label>Permanent Address: </label>
@@ -295,15 +237,18 @@
           <button type="submit" class="btn btnSubmit">
             Register
           </button>
+          <div class="loader" id="loader" style="display: none"></div>
         </div>
       </form>
     </div>
   </div>
 </main>
 
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('register-form');
+    const loader = document.getElementById('loader');
 
     if (!form) {
     console.error('Form element not found.');
@@ -414,11 +359,11 @@
         showError(phone, 'Phone number must be 10 digits.');
       }
 
-      // Validate Department for Doctor
-      const departmentSelect = form.querySelector('select[name="department_id"]');
-      if (departmentSelect && departmentSelect.value === '') {
-        showError(departmentSelect, 'Please select a department.');
-      }
+      // // Validate Department for Doctor
+      // const departmentSelect = form.querySelector('select[name="department_id"]');
+      // if (departmentSelect && departmentSelect.value === '') {
+      //   showError(departmentSelect, 'Please select a department.');
+      // }
 
       // validate address
       const peraddress = form.querySelector('input[name="permanent_address"]');
@@ -438,6 +383,9 @@
     } else {
       // Allow form submission only if valid
       console.log("hello1")
+      event.preventDefault(); // Prevent submission
+
+      loader.style.display = 'block';
       form.submit();
     }
   });

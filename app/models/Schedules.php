@@ -100,12 +100,32 @@ class Schedules{
         return $this->db->getData($table, $conditions, $fields, $joins, $groupBy, $orderBy);
     }
 
-    public function getScheduleById() {
-        
-        // $condition= ['user_id' => $userId];   
+    public function getScheduleById($userId) {
+        $table = 'doctor_schedules s';
+        $conditions = ['user_id' => $userId]; 
+        $fields = '
+            GROUP_CONCAT(DISTINCT IF(FIND_IN_SET(sh.shift_id, s.sunday), sh.title, NULL) ORDER BY sh.start_time) AS sunday,
+            GROUP_CONCAT(DISTINCT IF(FIND_IN_SET(sh.shift_id, s.monday), sh.title, NULL) ORDER BY sh.start_time) AS monday,
+            GROUP_CONCAT(DISTINCT IF(FIND_IN_SET(sh.shift_id, s.tuesday), sh.title, NULL) ORDER BY sh.start_time) AS tuesday,
+            GROUP_CONCAT(DISTINCT IF(FIND_IN_SET(sh.shift_id, s.wednesday), sh.title, NULL) ORDER BY sh.start_time) AS wednesday,
+            GROUP_CONCAT(DISTINCT IF(FIND_IN_SET(sh.shift_id, s.thursday), sh.title, NULL) ORDER BY sh.start_time) AS thursday,
+            GROUP_CONCAT(DISTINCT IF(FIND_IN_SET(sh.shift_id, s.friday), sh.title, NULL) ORDER BY sh.start_time) AS friday,
+            GROUP_CONCAT(DISTINCT IF(FIND_IN_SET(sh.shift_id, s.saturday), sh.title, NULL) ORDER BY sh.start_time) AS saturday
+        '  ;
+        $joins = [
+            'shifts sh' => '
+                FIND_IN_SET(sh.shift_id, s.sunday) OR
+                FIND_IN_SET(sh.shift_id, s.monday) OR
+                FIND_IN_SET(sh.shift_id, s.tuesday) OR
+                FIND_IN_SET(sh.shift_id, s.wednesday) OR
+                FIND_IN_SET(sh.shift_id, s.thursday) OR
+                FIND_IN_SET(sh.shift_id, s.friday) OR
+                FIND_IN_SET(sh.shift_id, s.saturday)
+                ',
+        ];
         // $fields = 'user_id';
 
-        $result= $this->db->getData('doctor_schedules');
+        $result= $this->db->getData($table, $conditions, $fields, $joins);
         // print_r($result);
         return $result;
     }

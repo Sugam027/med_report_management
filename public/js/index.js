@@ -406,8 +406,8 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
 // change the username based on the input fullname 
 
-let debounceTimer;
 function handleFullNameChange(fullname) {
+  let debounceTimer;
 clearTimeout(debounceTimer);
 
 // Set a new timer to delay the username update by 1 second (1000 milliseconds)
@@ -451,14 +451,7 @@ function handleDobChange(dob) {
     // Update the age input field
     document.getElementById('age').value = age;
 
-    // Check or uncheck the minor checkbox based on age
-    const isMinorCheckbox = document.getElementById('is-minor');
-    isMinorCheckbox.checked = age < 16; // Check if age is less than 16
-  } else {
-    // Clear the age field and uncheck the checkbox if DOB is empty
-    document.getElementById('age').value = '';
-    document.getElementById('is-minor').checked = false; // Uncheck the checkbox
-  }
+  } 
 } ;
 
 // show doctor detail on role doctor
@@ -526,6 +519,8 @@ document.querySelector('.userProfile').addEventListener('click', handleModel);
 //     document.querySelector('.headerProfile').removeEventListener('click', handleModel);
 // };
 });
+
+
 
 // manage_sechedule page (can be removed later)
 document.addEventListener('DOMContentLoaded', function() {

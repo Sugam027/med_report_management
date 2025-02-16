@@ -11,6 +11,7 @@
             <p class="<?= $notification['is_read'] ? 'read' : 'unread'; ?>">
                 <?= $notification['message']; ?>
             </p>
+            <p class="created_date"><?= $notification['created_at']; ?></p>
         </div>
         <?php endforeach; ?>
     </div>
@@ -19,8 +20,6 @@
 <style>
     .notifications{
         background-color: #fff;
-        display: flex;
-        gap: 0.9rem;
         margin-bottom: 1rem;
         padding: 0.5rem;
         border-left: var(--aside-bg) 5px solid;
@@ -30,6 +29,10 @@
     }
     .notifications:hover{
         opacity: 0.8;
+    }
+    .notifications .created_date{
+        margin-top: 0.5rem;
+        color: var(--light-black);
     }
 </style>
 

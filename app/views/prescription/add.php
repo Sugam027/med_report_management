@@ -92,6 +92,8 @@
         </div>
 
         <button class="btn btnSubmit">Save</button>
+        <div class="loader" id="loader" style="display: none"></div>
+
       </form>
     </div>
 
@@ -100,6 +102,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('prescriptionForm');
+    const loader = document.getElementById('loader');
 
     if (!form) {
     console.error('Form element not found.');
@@ -124,12 +127,11 @@
         isValid = false;
       };
 
-      // Validate disease field
-      const diseaseField = document.getElementById('disease');
-      if (!diseaseField.value.trim()) {
-        showError(diseaseField, 'Disease field is required.');
+      // Validate symptoms 
+      const symptomsField = document.getElementById('symptoms');
+      if (!symptomsField.value.trim()) {
+        showError(symptomsField, 'Symptoms is required.');
       }
-
       // Validate examination detail
       const examinationField = document.getElementById('examinationDetail');
       if (!examinationField.value.trim()) {
@@ -140,6 +142,7 @@
      if (!isValid) {
       event.preventDefault(); // Prevent submission
     } else {
+      loader.style.display = 'block';
       // Allow form submission only if valid
       form.submit();
     }

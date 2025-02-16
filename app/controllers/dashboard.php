@@ -17,12 +17,15 @@ class dashboard extends BaseController{
         $totalDoctors = $this->userModel->total_doctors();
         $totalPatients = $this->userModel->total_patients();
         $totalAppointments = $this->appointmentModel->total_appointments();
+        $totalVisited = $this->appointmentModel->totalPreviousAppointments();
+
         // print_r($totalUsers);
         $data = [
             'totalUsers' => $totalUsers,
             'totalDoctors' => $totalDoctors,
             'totalPatients' => $totalPatients,
             'totalAppointments' => $totalAppointments,
+            'totalVisited' => $totalVisited,
         ];
 
         $this->view('dashboard/index', $data);

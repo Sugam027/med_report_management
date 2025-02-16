@@ -149,5 +149,4 @@ class appointment extends BaseController{
     }
 
     
-    
 }

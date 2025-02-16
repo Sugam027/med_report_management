@@ -159,7 +159,10 @@ class prescription extends BaseController{
         }
     
         $fileName = basename($files['name'][$index]);
-        $targetFilePath = $uploadDir . $fileName;
+        // Remove spaces and special characters from the file name
+        $fileNameWithoutSpaces = preg_replace('/\s+/', '_', $fileName); // Replace spaces with underscores
+        $fileNameWithoutSpaces = preg_replace('/[^A-Za-z0-9_.]/', '', $fileNameWithoutSpaces); // Remove special characters
+        $targetFilePath = $uploadDir . $fileNameWithoutSpaces;
     
         if (move_uploaded_file($files['tmp_name'][$index], $targetFilePath)) {
             return $fileName;

@@ -32,19 +32,19 @@
                 </td>
                 <?php if ($_SESSION['role_id'] === 2): ?>
                     <td>
+                        <?php if (!$appointment['status']): ?>
                         <form action="/appointment/updateStatus" method="POST" style="display:inline;">
                             <input type="hidden" name="appointment_id" value="<?= $appointment['appointment_id']; ?>">
                             <input type="hidden" name="status" value="true">
                             <button type="submit" class="btn mark-checked">C</button>
                         </form>
-                        <button class="btn view-prescription" onclick="location.href='/prescription/add/<?= $appointment['appointment_id']; ?>'">
-                            A
-                        </button>
-                        <?php if ($appointment['status']): ?>
-                            <button class="btn view-prescription" onclick="location.href='/prescription/viewpatient/<?= $appointment['patient_id']; ?>'">
-                                V
-                            </button>
                         <?php endif; ?>
+                        <button class="btn view-prescription" onclick="location.href='/prescription/add/<?= $appointment['appointment_id']; ?>'">
+                        Add
+                        </button>
+                        <button class="btn view-prescription" onclick="location.href='/prescription/viewpatient/<?= $appointment['patient_id']; ?>'">
+                        View
+                        </button>
                     </td>
                 <?php endif; ?>
             </tr>
