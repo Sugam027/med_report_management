@@ -61,7 +61,6 @@ class Users{
             $this->db->beginTransaction();
             // Insert into users table
             $userId = $this->db->insertData('users', $userData); // Store the ID from the insert
-            echo "User ID: $userId";
             // Insert into user_details table
             $userDetailsData['user_id'] = $userId;
             $this->db->insertData('user_details', $userDetailsData);
@@ -70,7 +69,6 @@ class Users{
             if ($doctorDetailsData) {
                 $doctorDetailsData['user_id'] = $userId;
                 $this->db->insertData('doctor_details', $doctorDetailsData);
-                print_r($doctorDetailsData);
 
             }
     

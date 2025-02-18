@@ -210,6 +210,7 @@
             </div>
             
           </div>
+
         </div>
         <p class="title">Address Details</p>
         <div class="row mb-2">
@@ -249,6 +250,10 @@
     document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('register-form');
     const loader = document.getElementById('loader');
+
+    const passwordField = document.getElementById('password');
+    const generatedPassword = generatePassword(12); // Generate a 12-character password
+    passwordField.value = generatedPassword;
 
     if (!form) {
     console.error('Form element not found.');
@@ -390,6 +395,27 @@
     }
   });
 });
+
+document.getElementById('role-select').addEventListener('change', function() {
+  var role = this.value.toLowerCase();
+  var doctorDetails = document.getElementById('doctor-details');
+  if (role === '2') {
+
+    doctorDetails.style.display = 'block';
+  } else {
+    doctorDetails.style.display = 'none';
+  }
+});
+
+function generatePassword(length) {
+  const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    password += charset[randomIndex];
+  }
+  return password;
+}
 
 </script>
 

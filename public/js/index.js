@@ -269,6 +269,19 @@ window.onunload = () => {
     document.querySelector('.headerProfile').removeEventListener('click', handleModel);
 };
 
+
+
+// auto generate password
+// function generatePassword(length) {
+//   const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+//   let password = "";
+//   for (let i = 0; i < length; i++) {
+//     const randomIndex = Math.floor(Math.random() * charset.length);
+//     password += charset[randomIndex];
+//   }
+//   return password;
+// }
+
 // display session message
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -353,6 +366,26 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 });
 
+// Assign the generated password to the hidden field
+// document.addEventListener('DOMContentLoaded', function() {
+//   const passwordField = document.getElementById('password');
+//   const generatedPassword = generatePassword(12); // Generate a 12-character password
+//   passwordField.value = generatedPassword;
+//   // console.log("Generated Password:", generatedPassword); // For debugging purposes (can be removed in production)
+// });
+
+// show doctor detail on role doctor
+// document.getElementById('role-select').addEventListener('change', function() {
+//   var role = this.value.toLowerCase();
+//   var doctorDetails = document.getElementById('doctor-details');
+//   if (role === '2') {
+
+//     doctorDetails.style.display = 'block';
+//   } else {
+//     doctorDetails.style.display = 'none';
+//   }
+// });
+
 // filter the data
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('searchInput');
@@ -402,6 +435,7 @@ document.getElementById('searchInput').addEventListener('input', function() {
     }
   });
 });
+
 
 
 // change the username based on the input fullname 
@@ -454,36 +488,11 @@ function handleDobChange(dob) {
   } 
 } ;
 
-// show doctor detail on role doctor
-document.getElementById('role-select').addEventListener('change', function() {
-  var role = this.value.toLowerCase();
-  var doctorDetails = document.getElementById('doctor-details');
-  if (role === '2') {
 
-    doctorDetails.style.display = 'block';
-  } else {
-    doctorDetails.style.display = 'none';
-  }
-});
 
-// auto generate password
-function generatePassword(length) {
-  const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-  let password = "";
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * charset.length);
-    password += charset[randomIndex];
-  }
-  return password;
-}
 
-// Assign the generated password to the hidden field
-document.addEventListener('DOMContentLoaded', function() {
-  const passwordField = document.getElementById('password');
-  const generatedPassword = generatePassword(12); // Generate a 12-character password
-  passwordField.value = generatedPassword;
-  // console.log("Generated Password:", generatedPassword); // For debugging purposes (can be removed in production)
-});
+
+
 
 // toggle the profile model
 document.addEventListener('DOMContentLoaded', function() {
